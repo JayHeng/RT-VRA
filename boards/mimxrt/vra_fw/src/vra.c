@@ -1,18 +1,12 @@
 /*
- * Copyright (c) 2013 - 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2023 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "fsl_device_registers.h"
+#include "vra_iot_ram.h"
 #include "fsl_debug_console.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "board.h"
-#include "vra.h"
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -22,25 +16,26 @@
  * Prototypes
  ******************************************************************************/
 
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
-/*!
- * @brief Main function
- */
-int main(void)
+
+int vra_printf(const char *fmt_s, ...)
 {
-    /* Init board hardware. */
-    BOARD_InitPins();
-    BOARD_BootClockRUN();
-    BOARD_InitDebugConsole();
+#if VRA_DEBUG_LOG_INFO_ENABLE
+    PRINTF(fmt_s);
+#endif
+    
+    return 0;
+}
 
-    vra_printf("\r\nVRA: Target i.MXRT500.\r\n");
-    vra_printf("\r\n-------------------------------------\r\n");
-    vra_main();
-    vra_printf("-------------------------------------\r\n");
-
-    while (1)
-    {
-    }
+void vra_main(void)
+{
+    vra_printf("VRA: i.MXRT Various Ram Access solution.\r\n");
 }

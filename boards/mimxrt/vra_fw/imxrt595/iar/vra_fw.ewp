@@ -360,6 +360,7 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$/..</state>
+                    <state>$PROJ_DIR$/../../src</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
@@ -1456,6 +1457,7 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$/..</state>
+                    <state>$PROJ_DIR$/../../src</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
@@ -2551,6 +2553,7 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$/..</state>
+                    <state>$PROJ_DIR$/../../src</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
@@ -3647,6 +3650,7 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$/..</state>
+                    <state>$PROJ_DIR$/../../src</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
@@ -4549,6 +4553,15 @@
         <name>source</name>
         <file>
             <name>$PROJ_DIR$\..\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_iot_ram.h</name>
         </file>
     </group>
     <group>
