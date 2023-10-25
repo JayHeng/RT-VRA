@@ -67,7 +67,7 @@
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state>0</state>
+                    <state>A compact configuration of the C/C++14 runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -104,7 +104,7 @@
                 <option>
                     <name>GBECoreSlave</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>OGUseCmsis</name>
@@ -194,7 +194,7 @@
                 <option>
                     <name>TrustZoneModes</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OGAarch64Abi</name>
@@ -239,7 +239,6 @@
                     <state>CPU_MIMXRT595SFFOC_cm33</state>
                     <state>BOOT_HEADER_ENABLE=1</state>
                     <state>MCUXPRESSO_SDK</state>
-                    <state>SERIAL_PORT_TYPE_UART=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -364,9 +363,8 @@
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
-                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console</state>
+                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console_lite</state>
                     <state>$PROJ_DIR$/../../../../../components/uart</state>
-                    <state>$PROJ_DIR$/../../../../../components/serial_manager</state>
                     <state>$PROJ_DIR$/../../../../../components/lists</state>
                     <state>$PROJ_DIR$/../../../flash_config</state>
                     <state>$PROJ_DIR$/../../../../../CMSIS/Core/Include</state>
@@ -1011,7 +1009,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>###Unitialized###</state>
+                    <state>vra_fw_import_lib.o</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
@@ -1114,7 +1112,7 @@
                 <option>
                     <name>OG_32_64DeviceCoreSlave</name>
                     <version>33</version>
-                    <state>38</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>BrowseInfoPath</name>
@@ -1172,7 +1170,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>9.30.1.48832</state>
+                    <state>9.40.2.67586</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -1218,7 +1216,7 @@
                 <option>
                     <name>CoreVariant</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
@@ -1241,7 +1239,7 @@
                 <option>
                     <name>GFPUCoreSlave2</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>OGCMSISPackSelectDevice</name>
@@ -1337,7 +1335,6 @@
                     <state>BOOT_HEADER_ENABLE=1</state>
                     <state>CPU_MIMXRT595SFFOC_cm33</state>
                     <state>MCUXPRESSO_SDK</state>
-                    <state>SERIAL_PORT_TYPE_UART=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1462,9 +1459,8 @@
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
-                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console</state>
+                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console_lite</state>
                     <state>$PROJ_DIR$/../../../../../components/uart</state>
-                    <state>$PROJ_DIR$/../../../../../components/serial_manager</state>
                     <state>$PROJ_DIR$/../../../../../components/lists</state>
                     <state>$PROJ_DIR$/../../../flash_config</state>
                     <state>$PROJ_DIR$/../../../../../CMSIS/Core/Include</state>
@@ -2212,7 +2208,7 @@
                 <option>
                     <name>OG_32_64DeviceCoreSlave</name>
                     <version>33</version>
-                    <state>38</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>BrowseInfoPath</name>
@@ -2270,7 +2266,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.30.2.18207</state>
+                    <state>9.40.2.67586</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -2316,7 +2312,7 @@
                 <option>
                     <name>CoreVariant</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
@@ -2339,7 +2335,7 @@
                 <option>
                     <name>GFPUCoreSlave2</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>OGCMSISPackSelectDevice</name>
@@ -2434,7 +2430,6 @@
                     <state>CPU_MIMXRT595SFFOC_cm33</state>
                     <state>BOOT_HEADER_ENABLE=1</state>
                     <state>MCUXPRESSO_SDK</state>
-                    <state>SERIAL_PORT_TYPE_UART=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -2559,9 +2554,8 @@
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
-                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console</state>
+                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console_lite</state>
                     <state>$PROJ_DIR$/../../../../../components/uart</state>
-                    <state>$PROJ_DIR$/../../../../../components/serial_manager</state>
                     <state>$PROJ_DIR$/../../../../../components/lists</state>
                     <state>$PROJ_DIR$/../../../flash_config</state>
                     <state>$PROJ_DIR$/../../../../../CMSIS/Core/Include</state>
@@ -2589,7 +2583,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>1</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -3309,7 +3303,7 @@
                 <option>
                     <name>OG_32_64DeviceCoreSlave</name>
                     <version>33</version>
-                    <state>38</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>BrowseInfoPath</name>
@@ -3367,7 +3361,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.30.2.18207</state>
+                    <state>9.40.2.67586</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -3413,7 +3407,7 @@
                 <option>
                     <name>CoreVariant</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
@@ -3436,7 +3430,7 @@
                 <option>
                     <name>GFPUCoreSlave2</name>
                     <version>33</version>
-                    <state>58</state>
+                    <state>61</state>
                 </option>
                 <option>
                     <name>OGCMSISPackSelectDevice</name>
@@ -3532,7 +3526,6 @@
                     <state>BOOT_HEADER_ENABLE=1</state>
                     <state>NDEBUG</state>
                     <state>MCUXPRESSO_SDK</state>
-                    <state>SERIAL_PORT_TYPE_UART=1</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -3593,7 +3586,7 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>00100000</state>
+                    <state>11111110</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
@@ -3657,9 +3650,8 @@
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/drivers</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S</state>
                     <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/str</state>
-                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console</state>
+                    <state>$PROJ_DIR$/../../../../../devices/MIMXRT595S/utilities/debug_console_lite</state>
                     <state>$PROJ_DIR$/../../../../../components/uart</state>
-                    <state>$PROJ_DIR$/../../../../../components/serial_manager</state>
                     <state>$PROJ_DIR$/../../../../../components/lists</state>
                     <state>$PROJ_DIR$/../../../flash_config</state>
                     <state>$PROJ_DIR$/../../../../../CMSIS/Core/Include</state>
@@ -3687,7 +3679,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>1</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -4445,24 +4437,6 @@
             </file>
         </group>
         <group>
-            <name>serial_manager</name>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\components\serial_manager\fsl_component_serial_manager.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\components\serial_manager\fsl_component_serial_manager.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\components\serial_manager\fsl_component_serial_port_internal.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\components\serial_manager\fsl_component_serial_port_uart.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\components\serial_manager\fsl_component_serial_port_uart.h</name>
-            </file>
-        </group>
-        <group>
             <name>uart</name>
             <file>
                 <name>$PROJ_DIR$\..\..\..\..\..\components\uart\fsl_adapter_uart.h</name>
@@ -4586,16 +4560,13 @@
     <group>
         <name>utilities</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\fsl_assert.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console_lite\fsl_assert.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console\fsl_debug_console.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console_lite\fsl_debug_console.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console\fsl_debug_console.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console\fsl_debug_console_conf.h</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\debug_console_lite\fsl_debug_console.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT595S\utilities\str\fsl_str.c</name>

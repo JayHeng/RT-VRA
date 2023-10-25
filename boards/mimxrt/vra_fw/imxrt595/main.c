@@ -29,8 +29,6 @@
  */
 int main(void)
 {
-    char ch;
-
     /* Init board hardware. */
     BOARD_InitPins();
     BOARD_BootClockRUN();
@@ -40,7 +38,5 @@ int main(void)
 
     while (1)
     {
-        ch = GETCHAR();
-        PUTCHAR(ch);
     }
 }
