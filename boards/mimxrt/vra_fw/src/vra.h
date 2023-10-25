@@ -16,6 +16,24 @@
 // Whether to show VRA log info via UART console (for development)
 #define VRA_DEBUG_LOG_INFO_ENABLE        (1)
 
+// Supported Flexspi clock defn
+typedef enum _flexspi_root_clk_freq
+{
+    kFlexspiRootClkFreq_30MHz  = 1,
+    kFlexspiRootClkFreq_50MHz  = 2,
+    kFlexspiRootClkFreq_60MHz  = 3,
+    kFlexspiRootClkFreq_80MHz  = 4,
+    kFlexspiRootClkFreq_100MHz = 5,
+    kFlexspiRootClkFreq_120MHz = 6,
+    kFlexspiRootClkFreq_133MHz = 7,
+    kFlexspiRootClkFreq_166MHz = 8,
+    kFlexspiRootClkFreq_200MHz = 9,
+    kFlexspiRootClkFreq_240MHz = 10,
+    kFlexspiRootClkFreq_266MHz = 11,
+    kFlexspiRootClkFreq_332MHz = 12,
+    kFlexspiRootClkFreq_400MHz = 13,
+} flexspi_root_clk_freq_t;
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/

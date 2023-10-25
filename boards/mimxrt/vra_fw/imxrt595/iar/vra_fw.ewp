@@ -4407,6 +4407,9 @@
         <file>
             <name>$PROJ_DIR$\..\pin_mux.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\port_flexspi_info.h</name>
+        </file>
     </group>
     <group>
         <name>CMSIS</name>
@@ -4559,6 +4562,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_flexspi_ram_ops.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_iot_ram.h</name>
