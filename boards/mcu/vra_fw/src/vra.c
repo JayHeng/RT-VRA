@@ -44,7 +44,7 @@ void vra_main(void)
     cpu_show_clock_source();
 
     /* Init FlexSPI pinmux */
-    flexspi_pin_init(EXAMPLE_FLEXSPI,    EXAMPLE_FLEXSPI_PORT, kFLEXSPI_8PAD);
+    mixspi_pin_init(EXAMPLE_MIXSPI,    EXAMPLE_MIXSPI_PORT, kFLEXSPI_8PAD);
 
     uint32_t i  = 0;
     status_t st = kStatus_Success;
@@ -65,7 +65,7 @@ void vra_main(void)
      * should be 1024 aligned.*/
     for (i = 0; i < DRAM_SIZE; i += 1024)
     {
-        st = flexspi_hyper_ram_ipcommand_write_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
+        st = mixspi_hyper_ram_ipcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
                                                     sizeof(s_hyper_ram_write_buffer));
 
         if (st != kStatus_Success)
@@ -74,7 +74,7 @@ void vra_main(void)
             PRINTF("IP Command Write data Failure at 0x%x!\r\n", i);
         }
 
-        st = flexspi_hyper_ram_ipcommand_read_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
+        st = mixspi_hyper_ram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
                                                    sizeof(s_hyper_ram_read_buffer));
         if (st != kStatus_Success)
         {
@@ -92,7 +92,7 @@ void vra_main(void)
     PRINTF("IP Command Read/Write data succeed at all address range !\r\n");
 
     /* Need to reset FlexSPI controller between IP/AHB access. */
-    FLEXSPI_SoftwareReset(EXAMPLE_FLEXSPI);
+    FLEXSPI_SoftwareReset(EXAMPLE_MIXSPI);
 
     for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
     {
@@ -103,9 +103,9 @@ void vra_main(void)
 
     for (i = 0; i < DRAM_SIZE; i += 1024)
     {
-        flexspi_hyper_ram_ahbcommand_write_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
+        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
                                                 sizeof(s_hyper_ram_write_buffer));
-        flexspi_hyper_ram_ahbcommand_read_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
+        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
                                                sizeof(s_hyper_ram_write_buffer));
 
         if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
@@ -123,9 +123,9 @@ void vra_main(void)
 
     for (i = 1; i < DRAM_SIZE - 1024; i += 1024)
     {
-        flexspi_hyper_ram_ahbcommand_write_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
+        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
                                                 sizeof(s_hyper_ram_write_buffer));
-        flexspi_hyper_ram_ahbcommand_read_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
+        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
                                                sizeof(s_hyper_ram_read_buffer));
 
         if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
@@ -143,9 +143,9 @@ void vra_main(void)
 
     for (i = 2; i < DRAM_SIZE - 1024; i += 1024)
     {
-        flexspi_hyper_ram_ahbcommand_write_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
+        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
                                                 sizeof(s_hyper_ram_write_buffer));
-        flexspi_hyper_ram_ahbcommand_read_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
+        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
                                                sizeof(s_hyper_ram_read_buffer));
 
         if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
@@ -163,9 +163,9 @@ void vra_main(void)
 
     for (i = 3; i < DRAM_SIZE - 1024; i += 1024)
     {
-        flexspi_hyper_ram_ahbcommand_write_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
+        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
                                                 sizeof(s_hyper_ram_write_buffer));
-        flexspi_hyper_ram_ahbcommand_read_data(EXAMPLE_FLEXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
+        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
                                                sizeof(s_hyper_ram_read_buffer));
 
         if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)

@@ -9,9 +9,6 @@
 #define _VRA_IOT_RAM_H_
 
 #include "vra.h"
-#include "fsl_common.h"
-#include "fsl_flexspi.h"
-#include "port_flexspi_info.h"
 
 /*******************************************************************************
  * Definitions
@@ -33,14 +30,14 @@
  * Prototypes
  ******************************************************************************/
 
-extern status_t flexspi_hyper_ram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
-extern status_t flexspi_hyper_ram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
-extern status_t flexspi_hyper_ram_reset(FLEXSPI_Type *base);
+extern status_t mixspi_hyper_ram_write_mcr(MIXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
+extern status_t mixspi_hyper_ram_get_mcr(MIXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
+extern status_t mixspi_hyper_ram_reset(MIXSPI_Type *base);
 extern status_t BOARD_InitPsRam(void);
 
-extern status_t flexspi_hyper_ram_ipcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
-extern status_t flexspi_hyper_ram_ipcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
-extern void flexspi_hyper_ram_ahbcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
-extern void flexspi_hyper_ram_ahbcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
+extern status_t mixspi_hyper_ram_ipcommand_write_data(MIXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
+extern status_t mixspi_hyper_ram_ipcommand_read_data(MIXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
+extern void mixspi_hyper_ram_ahbcommand_write_data(MIXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
+extern void mixspi_hyper_ram_ahbcommand_read_data(MIXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length);
 
 #endif /* _VRA_IOT_RAM_H_ */

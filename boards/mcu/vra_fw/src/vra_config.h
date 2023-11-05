@@ -5,15 +5,14 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#ifndef _VRA_H_
-#define _VRA_H_
-
-#include "vra_adapter.h"
+#ifndef _VRA_CONFIG_H_
+#define _VRA_CONFIG_H_
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+// Whether to show VRA log info via UART console (for development)
+#define VRA_DEBUG_LOG_INFO_ENABLE        (1)
 
 /*******************************************************************************
  * Variables
@@ -24,6 +23,5 @@
  * Prototypes
  ******************************************************************************/
 
-void vra_main(void);
 
-#endif /* _VRA_H_ */
+#endif /* _VRA_CONFIG_H_ */

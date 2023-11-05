@@ -4408,7 +4408,7 @@
             <name>$PROJ_DIR$\..\pin_mux.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\port_flexspi_info.h</name>
+            <name>$PROJ_DIR$\..\port_mixspi_info.h</name>
         </file>
     </group>
     <group>
@@ -4562,6 +4562,15 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_adapter.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_define.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_flexspi_ram_ops.c</name>

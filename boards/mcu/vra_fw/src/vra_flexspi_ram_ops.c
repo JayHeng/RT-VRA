@@ -21,7 +21,7 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-status_t flexspi_hyper_ram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
+status_t mixspi_hyper_ram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
@@ -40,7 +40,7 @@ status_t flexspi_hyper_ram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32
     return status;
 }
 
-status_t flexspi_hyper_ram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
+status_t mixspi_hyper_ram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
@@ -59,7 +59,7 @@ status_t flexspi_hyper_ram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t
     return status;
 }
 
-status_t flexspi_hyper_ram_reset(FLEXSPI_Type *base)
+status_t mixspi_hyper_ram_reset(FLEXSPI_Type *base)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
@@ -167,8 +167,8 @@ status_t BOARD_InitPsRam(void)
     CACHE64_GetDefaultConfig(&cacheCfg);
     CACHE64_Init(CACHE64_POLSEL1, &cacheCfg);
 #if BOARD_ENABLE_PSRAM_CACHE
-    CACHE64_EnableWriteBuffer(CACHE64_CTRL1, true);
-    CACHE64_EnableCache(CACHE64_CTRL1);
+    CACHE64_EnableWriteBuffer(EXAMPLE_CACHE, true);
+    CACHE64_EnableCache(EXAMPLE_CACHE);
 #endif
 
     /* Get FLEXSPI default settings and configure the flexspi. */
@@ -197,31 +197,31 @@ status_t BOARD_InitPsRam(void)
 #if !(defined(FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN) && FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN)
     config.enableCombination = true;
 #endif
-    FLEXSPI_Init(EXAMPLE_FLEXSPI, &config);
+    FLEXSPI_Init(EXAMPLE_MIXSPI, &config);
 
     /* Configure flash settings according to serial flash feature. */
-    FLEXSPI_SetFlashConfig(EXAMPLE_FLEXSPI, &deviceconfig, kFLEXSPI_PortA1);
+    FLEXSPI_SetFlashConfig(EXAMPLE_MIXSPI, &deviceconfig, kFLEXSPI_PortA1);
 
     /* Update LUT table. */
-    FLEXSPI_UpdateLUT(EXAMPLE_FLEXSPI, 0, customLUT, ARRAY_SIZE(customLUT));
+    FLEXSPI_UpdateLUT(EXAMPLE_MIXSPI, 0, customLUT, ARRAY_SIZE(customLUT));
 
     /* Do software reset. */
-    FLEXSPI_SoftwareReset(EXAMPLE_FLEXSPI);
+    FLEXSPI_SoftwareReset(EXAMPLE_MIXSPI);
 
     /* Reset hyper ram. */
-    status = flexspi_hyper_ram_reset(EXAMPLE_FLEXSPI);
+    status = mixspi_hyper_ram_reset(EXAMPLE_MIXSPI);
     if (status != kStatus_Success)
     {
         return status;
     }
 
-    status = flexspi_hyper_ram_get_mcr(EXAMPLE_FLEXSPI, 0x0, mr0mr1);
+    status = mixspi_hyper_ram_get_mcr(EXAMPLE_MIXSPI, 0x0, mr0mr1);
     if (status != kStatus_Success)
     {
         return status;
     }
 
-    status = flexspi_hyper_ram_get_mcr(EXAMPLE_FLEXSPI, 0x4, mr4mr8);
+    status = mixspi_hyper_ram_get_mcr(EXAMPLE_MIXSPI, 0x4, mr4mr8);
     if (status != kStatus_Success)
     {
         return status;
@@ -230,7 +230,7 @@ status_t BOARD_InitPsRam(void)
     /* Enable RBX, burst length set to 1K. - MR8 */
     mr8Val[0] = (mr4mr8[0] & 0xFF00U) >> 8U;
     mr8Val[0] = mr8Val[0] | 0x0F;
-    status    = flexspi_hyper_ram_write_mcr(EXAMPLE_FLEXSPI, 0x8, mr8Val);
+    status    = mixspi_hyper_ram_write_mcr(EXAMPLE_MIXSPI, 0x8, mr8Val);
     if (status != kStatus_Success)
     {
         return status;
@@ -239,7 +239,7 @@ status_t BOARD_InitPsRam(void)
     /* Set LC code to 0x04(LC=7, maximum frequency 200M) - MR0. */
     mr0Val[0] = mr0mr1[0] & 0x00FFU;
     mr0Val[0] = (mr0Val[0] & ~0x3CU) | (4U << 2U);
-    status    = flexspi_hyper_ram_write_mcr(EXAMPLE_FLEXSPI, 0x0, mr0Val);
+    status    = mixspi_hyper_ram_write_mcr(EXAMPLE_MIXSPI, 0x0, mr0Val);
     if (status != kStatus_Success)
     {
         return status;
@@ -248,7 +248,7 @@ status_t BOARD_InitPsRam(void)
     /* Set WLC code to 0x01(WLC=7, maximum frequency 200M) - MR4. */
     mr4Val[0] = mr4mr8[0] & 0x00FFU;
     mr4Val[0] = (mr4Val[0] & ~0xE0U) | (1U << 5U);
-    status    = flexspi_hyper_ram_write_mcr(EXAMPLE_FLEXSPI, 0x4, mr4Val);
+    status    = mixspi_hyper_ram_write_mcr(EXAMPLE_MIXSPI, 0x4, mr4Val);
     if (status != kStatus_Success)
     {
         return status;
@@ -257,14 +257,14 @@ status_t BOARD_InitPsRam(void)
     return status;
 }
 
-status_t flexspi_hyper_ram_ipcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
+status_t mixspi_hyper_ram_ipcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
 
     /* Write data */
     flashXfer.deviceAddress = address;
-    flashXfer.port          = EXAMPLE_FLEXSPI_PORT;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Write;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = HYPERRAM_CMD_LUT_SEQ_IDX_WRITEDATA;
@@ -276,14 +276,14 @@ status_t flexspi_hyper_ram_ipcommand_write_data(FLEXSPI_Type *base, uint32_t add
     return status;
 }
 
-status_t flexspi_hyper_ram_ipcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
+status_t mixspi_hyper_ram_ipcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
 
     /* Read data */
     flashXfer.deviceAddress = address;
-    flashXfer.port          = EXAMPLE_FLEXSPI_PORT;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = HYPERRAM_CMD_LUT_SEQ_IDX_READDATA;
@@ -295,14 +295,14 @@ status_t flexspi_hyper_ram_ipcommand_read_data(FLEXSPI_Type *base, uint32_t addr
     return status;
 }
 
-void flexspi_hyper_ram_ahbcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
+void mixspi_hyper_ram_ahbcommand_write_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
 {
-    uint32_t *startAddr = (uint32_t *)(EXAMPLE_FLEXSPI_AMBA_BASE + address);
+    uint32_t *startAddr = (uint32_t *)(EXAMPLE_MIXSPI_AMBA_BASE + address);
     memcpy(startAddr, buffer, length);
 }
 
-void flexspi_hyper_ram_ahbcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
+void mixspi_hyper_ram_ahbcommand_read_data(FLEXSPI_Type *base, uint32_t address, uint32_t *buffer, uint32_t length)
 {
-    uint32_t *startAddr = (uint32_t *)(EXAMPLE_FLEXSPI_AMBA_BASE + address);
+    uint32_t *startAddr = (uint32_t *)(EXAMPLE_MIXSPI_AMBA_BASE + address);
     memcpy(buffer, startAddr, length);
 }

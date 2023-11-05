@@ -5,28 +5,31 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#ifndef _PORT_FLEXSPI_INFO_H_
-#define _PORT_FLEXSPI_INFO_H_
+#ifndef _PORT_MIXSPI_INFO_H_
+#define _PORT_MIXSPI_INFO_H_
 
-/*${header:start}*/
+#include "vra_config.h"
+#include "vra_define.h"
+
 #include "fsl_cache.h"
 #include "fsl_clock.h"
-#include "fsl_cache.h"
 #include "fsl_iopctl.h"
 #include "fsl_power.h"
 #include "fsl_flexspi.h"
 #include "pin_mux.h"
 #include "board.h"
-#include "vra.h"
-/*${header:end}*/
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/*${macro:start}*/
-#define EXAMPLE_FLEXSPI                 FLEXSPI1
-#define EXAMPLE_FLEXSPI_AMBA_BASE       FlexSPI1_AMBA_BASE
-#define EXAMPLE_FLEXSPI_PORT            kFLEXSPI_PortA1
-#define DRAM_SIZE                       0x800000U
+
+#define VRA_MIXSPI_MODULE VRA_MIXSPI_MODULE_IS_FLEXSPI
+
+#define EXAMPLE_MIXSPI                 FLEXSPI1
+#define EXAMPLE_CACHE                  CACHE64_CTRL1
+#define EXAMPLE_MIXSPI_AMBA_BASE       FlexSPI1_AMBA_BASE
+#define EXAMPLE_MIXSPI_PORT            kFLEXSPI_PortA1
+#define DRAM_SIZE                      0x800000U
 
 /*******************************************************************************
  * Variables
@@ -89,11 +92,11 @@ static void cpu_show_clock_source(void)
 #endif
 }
 
-static void flexspi_port_switch(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
+static void mixspi_port_switch(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
 {
 }
 
-static void flexspi_pin_init(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
+static void mixspi_pin_init(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
 {
     if (base == FLEXSPI0)
     {
@@ -336,66 +339,66 @@ static void flexspi_pin_init(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pa
     }
 }
 
-static void flexspi_clock_init(FLEXSPI_Type *base, flexspi_root_clk_freq_t clkFreq)
+static void mixspi_clock_init(FLEXSPI_Type *base, mixspi_root_clk_freq_t clkFreq)
 {
     if (base == FLEXSPI0)
     {
-        if (clkFreq == kFlexspiRootClkFreq_30MHz)
+        if (clkFreq == kMixspiRootClkFreq_30MHz)
         {
             /* Move FLEXSPI clock source from main clock to FRO192M / 7 to avoid instruction/data fetch issue in XIP when
              * updating PLL and main clock.
              */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 3U, 7U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 3U, 7U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_50MHz)
+        else if (clkFreq == kMixspiRootClkFreq_50MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 8 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 8U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 8U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_60MHz)
+        else if (clkFreq == kMixspiRootClkFreq_60MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 7 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 7U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 7U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_80MHz)
+        else if (clkFreq == kMixspiRootClkFreq_80MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 5 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 5U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 5U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_100MHz)
+        else if (clkFreq == kMixspiRootClkFreq_100MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 4 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 4U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 4U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_120MHz)
+        else if (clkFreq == kMixspiRootClkFreq_120MHz)
         {
             /* Set FlexSPI clock: source AUX1_PLL£¨327MHz£©, divide by 3 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 4U, 3U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 4U, 3U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_133MHz)
+        else if (clkFreq == kMixspiRootClkFreq_133MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 3 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 3U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 3U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_166MHz)
+        else if (clkFreq == kMixspiRootClkFreq_166MHz)
         {
             /* Set FlexSPI clock: source AUX1_PLL£¨327MHz£©, divide by 2 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 4U, 2U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 4U, 2U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_200MHz)
+        else if (clkFreq == kMixspiRootClkFreq_200MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 2 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 2U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 2U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_332MHz)
+        else if (clkFreq == kMixspiRootClkFreq_332MHz)
         {
             /* Set FlexSPI clock: source AUX1_PLL£¨327MHz£©, divide by 1 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 4U, 1U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 4U, 1U);
         }
-        else if (clkFreq == kFlexspiRootClkFreq_400MHz)
+        else if (clkFreq == kMixspiRootClkFreq_400MHz)
         {
             /* Set FlexSPI clock: source AUX0_PLL£¨396MHz£©, divide by 1 */
-            BOARD_SetFlexspiClock(EXAMPLE_FLEXSPI, 2U, 1U);
+            BOARD_SetFlexspiClock(EXAMPLE_MIXSPI, 2U, 1U);
         }
         else
         {
@@ -410,7 +413,7 @@ static void flexspi_clock_init(FLEXSPI_Type *base, flexspi_root_clk_freq_t clkFr
     }
 }
 
-static uint32_t flexspi_get_clock(FLEXSPI_Type *base)
+static uint32_t mixspi_get_clock(FLEXSPI_Type *base)
 {
     if (base == FLEXSPI0)
     {
@@ -426,7 +429,7 @@ static uint32_t flexspi_get_clock(FLEXSPI_Type *base)
     }
 }
 
-static void flexspi_show_clock_source(FLEXSPI_Type *base)
+static void mixspi_show_clock_source(FLEXSPI_Type *base)
 {
 #if VRA_DEBUG_LOG_INFO_ENABLE
     uint32_t index = 0;
@@ -515,8 +518,8 @@ static void flexspi_show_clock_source(FLEXSPI_Type *base)
     else
     {}
     vra_printf("VRA: FLEXSPI%d Clk Source Divider: %d.\r\n", index, (clkDiv + 1U));
-    vra_printf("VRA: FLEXSPI%d Clk Frequency: %dHz.\r\n", index, flexspi_get_clock(EXAMPLE_FLEXSPI));
+    vra_printf("VRA: FLEXSPI%d Clk Frequency: %dHz.\r\n", index, mixspi_get_clock(EXAMPLE_MIXSPI));
 #endif
 }
 
-#endif /* _PORT_FLEXSPI_INFO_H_ */
+#endif /* _PORT_MIXSPI_INFO_H_ */
