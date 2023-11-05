@@ -11,6 +11,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
+#include "vra.h"
 
 /*******************************************************************************
  * Definitions
@@ -29,18 +30,17 @@
  */
 int main(void)
 {
-    char ch;
-
     /* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    PRINTF("hello world.\r\n");
+    vra_printf("\r\nVRA: Target i.MXRT600.\r\n");
+    vra_printf("\r\n-------------------------------------\r\n");
+    vra_main();
+    vra_printf("-------------------------------------\r\n");
 
     while (1)
     {
-        ch = GETCHAR();
-        PUTCHAR(ch);
     }
 }

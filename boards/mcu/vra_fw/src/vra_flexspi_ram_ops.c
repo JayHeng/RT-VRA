@@ -144,28 +144,10 @@ status_t BOARD_InitPsRam(void)
     uint32_t mr4Val[1];
     uint32_t mr8Val[1];
     flexspi_config_t config;
-    cache64_config_t cacheCfg;
     status_t status = kStatus_Success;
 
-    POWER_DisablePD(kPDRUNCFG_APD_FLEXSPI1_SRAM);
-    POWER_DisablePD(kPDRUNCFG_PPD_FLEXSPI1_SRAM);
-    POWER_ApplyPD();
+    bsp_mixspi_init();
 
-    CLOCK_AttachClk(kAUX0_PLL_to_FLEXSPI1_CLK);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexspi1Clk, 1);
-
-    RESET_PeripheralReset(kFLEXSPI1_RST_SHIFT_RSTn);
-#if (defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
-    /* Need to explicitly enable FlexSPI1 clock in mpi_loader_extram_loader case.
-     * In that case, FlexSPI driver need to be used before data sections copy. So
-     * global variables are forbidden with FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL=1.
-     */
-    CLOCK_EnableClock(kCLOCK_Flexspi1);
-#endif
-
-    /* As cache depends on FlexSPI power and clock, cache must be initialized after FlexSPI power/clock is set */
-    CACHE64_GetDefaultConfig(&cacheCfg);
-    CACHE64_Init(CACHE64_POLSEL1, &cacheCfg);
 #if BOARD_ENABLE_PSRAM_CACHE
     CACHE64_EnableWriteBuffer(EXAMPLE_CACHE, true);
     CACHE64_EnableCache(EXAMPLE_CACHE);
@@ -185,6 +167,7 @@ status_t BOARD_InitPsRam(void)
     {
         config.ahbConfig.buffer[i].bufferSize = 0;
     }
+#if defined(CPU_MIMXRT595SFFOC_cm33)
     /* FlexSPI1 has total 2KB RX buffer.
      * Set GPU/Display master to use AHB Rx Buffer0.
      */
@@ -194,6 +177,17 @@ status_t BOARD_InitPsRam(void)
     config.ahbConfig.buffer[0].priority       = 7; /* Set GPU/Display to highest priority. */
     /* All other masters use last buffer with 1KB bytes. */
     config.ahbConfig.buffer[FSL_FEATURE_FLEXSPI_AHB_BUFFER_COUNT - 1].bufferSize = 1024;
+#elif defined(CPU_MIMXRT685SFVKB_cm33)
+    /* FlexSPI has total 1KB RX buffer.
+     * Set DMA0 master to use AHB Rx Buffer0.
+     */
+    config.ahbConfig.buffer[0].masterIndex    = 4;   /* DMA0 */
+    config.ahbConfig.buffer[0].bufferSize     = 512; /* Allocate 512B bytes for DMA0 */
+    config.ahbConfig.buffer[0].enablePrefetch = true;
+    config.ahbConfig.buffer[0].priority       = 0;
+    /* All other masters use last buffer with 512B bytes. */
+    config.ahbConfig.buffer[FSL_FEATURE_FLEXSPI_AHB_BUFFER_COUNT - 1].bufferSize = 512;
+#endif
 #if !(defined(FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN) && FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN)
     config.enableCombination = true;
 #endif
