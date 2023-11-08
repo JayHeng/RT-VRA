@@ -14,11 +14,11 @@
  * Definitions
  ******************************************************************************/
 
-#define HYPERRAM_CMD_LUT_SEQ_IDX_READDATA  0
-#define HYPERRAM_CMD_LUT_SEQ_IDX_WRITEDATA 1
-#define HYPERRAM_CMD_LUT_SEQ_IDX_READREG   2
-#define HYPERRAM_CMD_LUT_SEQ_IDX_WRITEREG  3
-#define HYPERRAM_CMD_LUT_SEQ_IDX_RESET     4
+#define IOTRAM_CMD_LUT_SEQ_IDX_READDATA   0
+#define IOTRAM_CMD_LUT_SEQ_IDX_WRITEDATA  1
+#define IOTRAM_CMD_LUT_SEQ_IDX_READREG    2
+#define IOTRAM_CMD_LUT_SEQ_IDX_WRITEREG   3
+#define IOTRAM_CMD_LUT_SEQ_IDX_RESET      4
 
 /*******************************************************************************
  * Variables

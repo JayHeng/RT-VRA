@@ -28,10 +28,10 @@ status_t mixspi_hyper_ram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_
 
     /* Write data */
     flashXfer.deviceAddress = regAddr;
-    flashXfer.port          = kFLEXSPI_PortA1;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Write;
     flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = 3;
+    flashXfer.seqIndex      = IOTRAM_CMD_LUT_SEQ_IDX_WRITEREG;
     flashXfer.data          = mrVal;
     flashXfer.dataSize      = 1;
 
@@ -47,10 +47,10 @@ status_t mixspi_hyper_ram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t 
 
     /* Read data */
     flashXfer.deviceAddress = regAddr;
-    flashXfer.port          = kFLEXSPI_PortA1;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = 2;
+    flashXfer.seqIndex      = IOTRAM_CMD_LUT_SEQ_IDX_READREG;
     flashXfer.data          = mrVal;
     flashXfer.dataSize      = 2;
 
@@ -66,10 +66,10 @@ status_t mixspi_hyper_ram_reset(FLEXSPI_Type *base)
 
     /* Write data */
     flashXfer.deviceAddress = 0x0U;
-    flashXfer.port          = kFLEXSPI_PortA1;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Command;
     flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = 4;
+    flashXfer.seqIndex      = IOTRAM_CMD_LUT_SEQ_IDX_RESET;
 
     status = FLEXSPI_TransferBlocking(base, &flashXfer);
 
@@ -98,9 +98,9 @@ status_t BOARD_InitPsRam(void)
         .dataValidTime        = 1,
         .columnspace          = 0,
         .enableWordAddress    = false,
-        .AWRSeqIndex          = 1,
+        .AWRSeqIndex          = IOTRAM_CMD_LUT_SEQ_IDX_WRITEDATA,
         .AWRSeqNumber         = 1,
-        .ARDSeqIndex          = 0,
+        .ARDSeqIndex          = IOTRAM_CMD_LUT_SEQ_IDX_READDATA,
         .ARDSeqNumber         = 1,
         .AHBWriteWaitUnit     = kFLEXSPI_AhbWriteWaitUnit2AhbCycle,
         .AHBWriteWaitInterval = 0,
@@ -109,32 +109,32 @@ status_t BOARD_InitPsRam(void)
 
     uint32_t customLUT[64] = {
         /* Read Data */
-        [0] =
-            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x20, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
-        [1] = FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_READ_DDR,
-                              kFLEXSPI_8PAD, 0x04),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_READDATA + 0] =
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR,            kFLEXSPI_8PAD, 0x20, kFLEXSPI_Command_RADDR_DDR,      kFLEXSPI_8PAD, 0x20),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_READDATA + 1] = 
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_READ_DDR,       kFLEXSPI_8PAD, 0x04),
 
         /* Write Data */
-        [4] =
-            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0xA0, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
-        [5] = FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_WRITE_DDR,
-                              kFLEXSPI_8PAD, 0x04),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_WRITEDATA + 0] =
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR,            kFLEXSPI_8PAD, 0xA0, kFLEXSPI_Command_RADDR_DDR,      kFLEXSPI_8PAD, 0x20),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_WRITEDATA + 1] = 
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_WRITE_DDR,      kFLEXSPI_8PAD, 0x04),
 
         /* Read Register */
-        [8] =
-            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x40, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
-        [9] = FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_READ_DDR,
-                              kFLEXSPI_8PAD, 0x04),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_READREG + 0] =
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR,            kFLEXSPI_8PAD, 0x40, kFLEXSPI_Command_RADDR_DDR,      kFLEXSPI_8PAD, 0x20),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_READREG + 1] = 
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DUMMY_RWDS_DDR, kFLEXSPI_8PAD, 0x07, kFLEXSPI_Command_READ_DDR,       kFLEXSPI_8PAD, 0x04),
 
         /* Write Register */
-        [12] =
-            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0xC0, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
-        [13] = FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_8PAD, 0x08, kFLEXSPI_Command_STOP, kFLEXSPI_1PAD,
-                               0x00),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_WRITEREG + 0] =
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR,            kFLEXSPI_8PAD, 0xC0, kFLEXSPI_Command_RADDR_DDR,      kFLEXSPI_8PAD, 0x20),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_WRITEREG + 1] = 
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR,      kFLEXSPI_8PAD, 0x08, kFLEXSPI_Command_STOP,           kFLEXSPI_1PAD, 0x00),
 
         /* reset */
-        [16] =
-            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0xFF, kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_8PAD, 0x03),
+        [4 * IOTRAM_CMD_LUT_SEQ_IDX_RESET + 0] =
+            FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR,            kFLEXSPI_8PAD, 0xFF, kFLEXSPI_Command_DUMMY_SDR,      kFLEXSPI_8PAD, 0x03),
 
     };
 
@@ -194,7 +194,7 @@ status_t BOARD_InitPsRam(void)
     FLEXSPI_Init(EXAMPLE_MIXSPI, &config);
 
     /* Configure flash settings according to serial flash feature. */
-    FLEXSPI_SetFlashConfig(EXAMPLE_MIXSPI, &deviceconfig, kFLEXSPI_PortA1);
+    FLEXSPI_SetFlashConfig(EXAMPLE_MIXSPI, &deviceconfig, EXAMPLE_MIXSPI_PORT);
 
     /* Update LUT table. */
     FLEXSPI_UpdateLUT(EXAMPLE_MIXSPI, 0, customLUT, ARRAY_SIZE(customLUT));
@@ -261,7 +261,7 @@ status_t mixspi_hyper_ram_ipcommand_write_data(FLEXSPI_Type *base, uint32_t addr
     flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Write;
     flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = HYPERRAM_CMD_LUT_SEQ_IDX_WRITEDATA;
+    flashXfer.seqIndex      = IOTRAM_CMD_LUT_SEQ_IDX_WRITEDATA;
     flashXfer.data          = buffer;
     flashXfer.dataSize      = length;
 
@@ -280,7 +280,7 @@ status_t mixspi_hyper_ram_ipcommand_read_data(FLEXSPI_Type *base, uint32_t addre
     flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = HYPERRAM_CMD_LUT_SEQ_IDX_READDATA;
+    flashXfer.seqIndex      = IOTRAM_CMD_LUT_SEQ_IDX_READDATA;
     flashXfer.data          = buffer;
     flashXfer.dataSize      = length;
 
