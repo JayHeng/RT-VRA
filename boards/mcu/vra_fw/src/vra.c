@@ -23,6 +23,9 @@
 static uint8_t s_psram_write_buffer[1024];
 static uint8_t s_psram_read_buffer[1024];
 
+/* Main PSRAM paramenter structure */
+psram_property_info_t g_psramPropertyInfo;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -43,16 +46,24 @@ void vra_main(void)
     /* Show CPU clock source */
     cpu_show_clock_source();
 
+    vra_psram_set_param_for_apmemory();
+
+    vra_printf("\r\nVRA: Set FlexSPI port to %d-bit pad.\r\n", 1u << (uint32_t)g_psramPropertyInfo.mixspiPad);
     /* Init FlexSPI pinmux */
-    mixspi_pin_init(EXAMPLE_MIXSPI,    EXAMPLE_MIXSPI_PORT, kFLEXSPI_8PAD);
+    mixspi_pin_init(EXAMPLE_MIXSPI, EXAMPLE_MIXSPI_PORT, g_psramPropertyInfo.mixspiPad);
 
     uint32_t i  = 0;
     status_t st = kStatus_Success;
-    status_t status = BOARD_InitPsRam();
+
+    status_t status = mixspi_psram_init(EXAMPLE_MIXSPI, g_psramPropertyInfo.mixspiCustomLUTVendor, g_psramPropertyInfo.mixspiReadSampleClock);
     if (status != kStatus_Success)
     {
         assert(false);
     }
+    vra_printf("VRA: FLEXSPI module is initialized to xccela mode.\r\n");
+
+    /* Show FlexSPI clock source */
+    mixspi_show_clock_source(EXAMPLE_MIXSPI);
 
     PRINTF("FLEXSPI example started!\r\n");
 

@@ -4963,12 +4963,6 @@
         </file>
     </group>
     <group>
-        <name>startup</name>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\RW612\iar\startup_RW612.s</name>
-        </file>
-    </group>
-    <group>
         <name>source</name>
         <file>
             <name>$PROJ_DIR$\..\main.c</name>
@@ -4993,6 +4987,18 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_apmemory.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_apmemory.h</name>
+        </file>
+    </group>
+    <group>
+        <name>startup</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\devices\RW612\iar\startup_RW612.s</name>
         </file>
     </group>
     <group>

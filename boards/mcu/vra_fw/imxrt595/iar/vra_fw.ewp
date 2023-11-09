@@ -4578,6 +4578,12 @@
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_apmemory.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_apmemory.h</name>
+        </file>
     </group>
     <group>
         <name>startup</name>
