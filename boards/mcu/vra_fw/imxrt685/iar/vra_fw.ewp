@@ -4547,12 +4547,6 @@
         </file>
     </group>
     <group>
-        <name>startup</name>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT685S\iar\startup_MIMXRT685S_cm33.s</name>
-        </file>
-    </group>
-    <group>
         <name>source</name>
         <file>
             <name>$PROJ_DIR$\..\main.c</name>
@@ -4573,10 +4567,16 @@
             <name>$PROJ_DIR$\..\..\src\vra_define.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\src\vra_flexspi_ram_ops.c</name>
+            <name>$PROJ_DIR$\..\..\src\vra_flexspi_psram_ops.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\src\vra_iot_ram.h</name>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram.h</name>
+        </file>
+    </group>
+    <group>
+        <name>startup</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\devices\MIMXRT685S\iar\startup_MIMXRT685S_cm33.s</name>
         </file>
     </group>
     <group>

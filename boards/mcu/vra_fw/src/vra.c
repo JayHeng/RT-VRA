@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "vra_iot_ram.h"
+#include "vra_pseudo_sram.h"
 #include "fsl_debug_console.h"
 /*******************************************************************************
  * Definitions
@@ -20,8 +20,8 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static uint8_t s_hyper_ram_write_buffer[1024];
-static uint8_t s_hyper_ram_read_buffer[1024];
+static uint8_t s_psram_write_buffer[1024];
+static uint8_t s_psram_read_buffer[1024];
 
 /*******************************************************************************
  * Code
@@ -56,17 +56,17 @@ void vra_main(void)
 
     PRINTF("FLEXSPI example started!\r\n");
 
-    for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
+    for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
-        s_hyper_ram_write_buffer[i] = i;
+        s_psram_write_buffer[i] = i;
     }
 
     /* IP command write/read, should notice that the start address should be even address and the write address/size
      * should be 1024 aligned.*/
     for (i = 0; i < DRAM_SIZE; i += 1024)
     {
-        st = mixspi_hyper_ram_ipcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
-                                                    sizeof(s_hyper_ram_write_buffer));
+        st = mixspi_psram_ipcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+                                                    sizeof(s_psram_write_buffer));
 
         if (st != kStatus_Success)
         {
@@ -74,15 +74,15 @@ void vra_main(void)
             PRINTF("IP Command Write data Failure at 0x%x!\r\n", i);
         }
 
-        st = mixspi_hyper_ram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
-                                                   sizeof(s_hyper_ram_read_buffer));
+        st = mixspi_psram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+                                                   sizeof(s_psram_read_buffer));
         if (st != kStatus_Success)
         {
             st = kStatus_Fail;
             PRINTF("IP Command Read data Failure at 0x%x!\r\n", i);
         }
 
-        if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
+        if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
             PRINTF("IP Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
@@ -94,81 +94,81 @@ void vra_main(void)
     /* Need to reset FlexSPI controller between IP/AHB access. */
     FLEXSPI_SoftwareReset(EXAMPLE_MIXSPI);
 
-    for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
+    for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
-        s_hyper_ram_write_buffer[i] = (i + 0xFFU);
+        s_psram_write_buffer[i] = (i + 0xFFU);
     }
 
-    memset(s_hyper_ram_read_buffer, 0, sizeof(s_hyper_ram_read_buffer));
+    memset(s_psram_read_buffer, 0, sizeof(s_psram_read_buffer));
 
     for (i = 0; i < DRAM_SIZE; i += 1024)
     {
-        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
-                                                sizeof(s_hyper_ram_write_buffer));
-        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
-                                               sizeof(s_hyper_ram_write_buffer));
+        mixspi_psram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+                                                sizeof(s_psram_write_buffer));
+        mixspi_psram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+                                               sizeof(s_psram_write_buffer));
 
-        if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
+        if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
             PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
+    for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
-        s_hyper_ram_write_buffer[i] = i;
+        s_psram_write_buffer[i] = i;
     }
-    memset(s_hyper_ram_read_buffer, 0, sizeof(s_hyper_ram_read_buffer));
+    memset(s_psram_read_buffer, 0, sizeof(s_psram_read_buffer));
 
     for (i = 1; i < DRAM_SIZE - 1024; i += 1024)
     {
-        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
-                                                sizeof(s_hyper_ram_write_buffer));
-        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
-                                               sizeof(s_hyper_ram_read_buffer));
+        mixspi_psram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+                                                sizeof(s_psram_write_buffer));
+        mixspi_psram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+                                               sizeof(s_psram_read_buffer));
 
-        if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
+        if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
             PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
+    for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
-        s_hyper_ram_write_buffer[i] = (i + 0xFFU);
+        s_psram_write_buffer[i] = (i + 0xFFU);
     }
-    memset(s_hyper_ram_read_buffer, 0, sizeof(s_hyper_ram_read_buffer));
+    memset(s_psram_read_buffer, 0, sizeof(s_psram_read_buffer));
 
     for (i = 2; i < DRAM_SIZE - 1024; i += 1024)
     {
-        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
-                                                sizeof(s_hyper_ram_write_buffer));
-        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
-                                               sizeof(s_hyper_ram_read_buffer));
+        mixspi_psram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+                                                sizeof(s_psram_write_buffer));
+        mixspi_psram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+                                               sizeof(s_psram_read_buffer));
 
-        if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
+        if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
             PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)
+    for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
-        s_hyper_ram_write_buffer[i] = i;
+        s_psram_write_buffer[i] = i;
     }
-    memset(s_hyper_ram_read_buffer, 0, sizeof(s_hyper_ram_read_buffer));
+    memset(s_psram_read_buffer, 0, sizeof(s_psram_read_buffer));
 
     for (i = 3; i < DRAM_SIZE - 1024; i += 1024)
     {
-        mixspi_hyper_ram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_write_buffer,
-                                                sizeof(s_hyper_ram_write_buffer));
-        mixspi_hyper_ram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_hyper_ram_read_buffer,
-                                               sizeof(s_hyper_ram_read_buffer));
+        mixspi_psram_ahbcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+                                                sizeof(s_psram_write_buffer));
+        mixspi_psram_ahbcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+                                               sizeof(s_psram_read_buffer));
 
-        if (memcmp(s_hyper_ram_read_buffer, s_hyper_ram_write_buffer, sizeof(s_hyper_ram_write_buffer)) != 0)
+        if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
             PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
