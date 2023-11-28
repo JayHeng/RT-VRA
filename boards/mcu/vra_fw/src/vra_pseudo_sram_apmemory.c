@@ -77,6 +77,7 @@ status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base)
     uint32_t mr0Val[1];
     uint32_t mr4Val[1];
     uint32_t mr8Val[1];
+    psram_reg_access_t regAccess;
     status_t status = kStatus_Success;
 
     /* Reset hyper ram. */
@@ -85,23 +86,32 @@ status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base)
     {
         return status;
     }
-
-    status = mixspi_psram_get_mcr(base, 0x0, mr0mr1);
+    
+    regAccess.regNum = 2;
+    regAccess.regAddr = 0x0;
+    status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
+    mr0mr1[0] = regAccess.regValue.U;
 
-    status = mixspi_psram_get_mcr(base, 0x4, mr4mr8);
+    regAccess.regNum = 2;
+    regAccess.regAddr = 0x4;
+    status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
+    mr4mr8[0] = regAccess.regValue.U;
 
     /* Enable RBX, burst length set to 1K. - MR8 */
     mr8Val[0] = (mr4mr8[0] & 0xFF00U) >> 8U;
     mr8Val[0] = mr8Val[0] | 0x0F;
-    status    = mixspi_psram_write_mcr(base, 0x8, mr8Val);
+    regAccess.regNum = 1;
+    regAccess.regAddr = 0x8;
+    regAccess.regValue.U = mr8Val[0];
+    status    = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
@@ -110,7 +120,10 @@ status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base)
     /* Set LC code to 0x04(LC=7, maximum frequency 200M) - MR0. */
     mr0Val[0] = mr0mr1[0] & 0x00FFU;
     mr0Val[0] = (mr0Val[0] & ~0x3CU) | (4U << 2U);
-    status    = mixspi_psram_write_mcr(base, 0x0, mr0Val);
+    regAccess.regNum = 1;
+    regAccess.regAddr = 0x0;
+    regAccess.regValue.U = mr0Val[0];
+    status    = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
@@ -119,7 +132,10 @@ status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base)
     /* Set WLC code to 0x01(WLC=7, maximum frequency 200M) - MR4. */
     mr4Val[0] = mr4mr8[0] & 0x00FFU;
     mr4Val[0] = (mr4Val[0] & ~0xE0U) | (1U << 5U);
-    status    = mixspi_psram_write_mcr(base, 0x4, mr4Val);
+    regAccess.regNum = 1;
+    regAccess.regAddr = 0x4;
+    regAccess.regValue.U = mr4Val[0];
+    status    = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;

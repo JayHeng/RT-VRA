@@ -21,40 +21,44 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-status_t mixspi_psram_write_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
+status_t mixspi_psram_write_register(FLEXSPI_Type *base, psram_reg_access_t *regAccess)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
+    uint32_t writeValue = regAccess->regValue.U;
 
     /* Write data */
-    flashXfer.deviceAddress = regAddr;
+    flashXfer.deviceAddress = regAccess->regAddr;
     flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Write;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = PSRAM_CMD_LUT_SEQ_IDX_WRITEREG;
-    flashXfer.data          = mrVal;
-    flashXfer.dataSize      = 1;
+    flashXfer.data          = &writeValue;
+    flashXfer.dataSize      = regAccess->regNum;
 
     status = FLEXSPI_TransferBlocking(base, &flashXfer);
 
     return status;
 }
 
-status_t mixspi_psram_get_mcr(FLEXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal)
+status_t mixspi_psram_read_register(FLEXSPI_Type *base, psram_reg_access_t *regAccess)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
+    uint32_t regVal = 0;
 
     /* Read data */
-    flashXfer.deviceAddress = regAddr;
+    flashXfer.deviceAddress = regAccess->regAddr;
     flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = PSRAM_CMD_LUT_SEQ_IDX_READREG;
-    flashXfer.data          = mrVal;
-    flashXfer.dataSize      = 2;
+    flashXfer.data          = &regVal;
+    flashXfer.dataSize      = regAccess->regNum;
 
     status = FLEXSPI_TransferBlocking(base, &flashXfer);
+
+    regAccess->regValue.U = regVal;
 
     return status;
 }

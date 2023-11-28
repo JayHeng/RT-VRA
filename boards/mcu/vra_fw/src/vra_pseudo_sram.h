@@ -37,13 +37,33 @@ typedef struct _psram_property_info
     psram_protocol_type_t       psramProtocolType;
 } psram_property_info_t;
 
+// PSRAM status/cfg register r/w access helper
+typedef struct _psram_reg_access
+{
+    uint8_t regNum;
+    uint8_t regSeqIdx;
+    uint8_t reserved[2];
+    uint32_t regAddr;
+    union
+    {
+        struct
+        {
+            uint32_t reg1 : 8;
+            uint32_t reg2 : 8;
+            uint32_t reg3 : 8;
+            uint32_t reg4 : 8;
+        } B;
+        uint32_t U;
+    } regValue;
+} psram_reg_access_t;
+
 #define PSRAM_CMD_LUT_SEQ_IDX_READDATA   0
 #define PSRAM_CMD_LUT_SEQ_IDX_WRITEDATA  1
 #define PSRAM_CMD_LUT_SEQ_IDX_READREG    2
 #define PSRAM_CMD_LUT_SEQ_IDX_WRITEREG   3
 #define PSRAM_CMD_LUT_SEQ_IDX_RESET      4
 
-#define CUSTOM_LUT_LENGTH                 64
+#define CUSTOM_LUT_LENGTH                64
 
 ////////////////////////////////////////////////////////////////////////////////
 #define APMEMORY_DEVICE_SERIES      (1)
@@ -64,8 +84,8 @@ extern psram_property_info_t g_psramPropertyInfo;
  * Prototypes
  ******************************************************************************/
 
-extern status_t mixspi_psram_write_mcr(MIXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
-extern status_t mixspi_psram_get_mcr(MIXSPI_Type *base, uint8_t regAddr, uint32_t *mrVal);
+extern status_t mixspi_psram_write_register(MIXSPI_Type *base, psram_reg_access_t *regAccess);
+extern status_t mixspi_psram_read_register(MIXSPI_Type *base, psram_reg_access_t *regAccess);
 extern status_t mixspi_psram_reset(MIXSPI_Type *base);
 extern status_t mixspi_psram_init(MIXSPI_Type *base, const uint32_t *customLUT, flexspi_read_sample_clock_t rxSampleClock);
 
@@ -76,7 +96,7 @@ extern void mixspi_psram_ahbcommand_read_data(MIXSPI_Type *base, uint32_t addres
 
 #if APMEMORY_DEVICE_SERIES
 extern void vra_psram_set_param_for_apmemory(void);
-status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base);
+extern status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base);
 #endif
 
 #endif /* _VRA_PSEUDO_SRAM_H_ */
