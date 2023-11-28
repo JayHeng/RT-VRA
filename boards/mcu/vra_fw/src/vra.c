@@ -62,10 +62,16 @@ void vra_main(void)
     }
     vra_printf("VRA: FLEXSPI module is initialized to xccela mode.\r\n");
 
+    st = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
+    if (status != kStatus_Success)
+    {
+        assert(false);
+    }
+
     /* Show FlexSPI clock source */
     mixspi_show_clock_source(EXAMPLE_MIXSPI);
 
-    PRINTF("FLEXSPI example started!\r\n");
+    vra_printf("FLEXSPI example started!\r\n");
 
     for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
@@ -82,7 +88,7 @@ void vra_main(void)
         if (st != kStatus_Success)
         {
             st = kStatus_Fail;
-            PRINTF("IP Command Write data Failure at 0x%x!\r\n", i);
+            vra_printf("IP Command Write data Failure at 0x%x!\r\n", i);
         }
 
         st = mixspi_psram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
@@ -90,17 +96,17 @@ void vra_main(void)
         if (st != kStatus_Success)
         {
             st = kStatus_Fail;
-            PRINTF("IP Command Read data Failure at 0x%x!\r\n", i);
+            vra_printf("IP Command Read data Failure at 0x%x!\r\n", i);
         }
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            PRINTF("IP Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("IP Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    PRINTF("IP Command Read/Write data succeed at all address range !\r\n");
+    vra_printf("IP Command Read/Write data succeed at all address range !\r\n");
 
     /* Need to reset FlexSPI controller between IP/AHB access. */
     FLEXSPI_SoftwareReset(EXAMPLE_MIXSPI);
@@ -121,7 +127,7 @@ void vra_main(void)
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
@@ -141,7 +147,7 @@ void vra_main(void)
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
@@ -161,7 +167,7 @@ void vra_main(void)
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
@@ -181,10 +187,10 @@ void vra_main(void)
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            PRINTF("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("AHB Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    PRINTF("AHB Command Read/Write data succeed at all address range !\r\n");
+    vra_printf("AHB Command Read/Write data succeed at all address range !\r\n");
 }

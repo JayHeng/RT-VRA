@@ -70,5 +70,63 @@ void vra_psram_set_param_for_apmemory(void)
 #endif
 }
 
+status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base)
+{
+    uint32_t mr0mr1[1];
+    uint32_t mr4mr8[1];
+    uint32_t mr0Val[1];
+    uint32_t mr4Val[1];
+    uint32_t mr8Val[1];
+    status_t status = kStatus_Success;
+
+    /* Reset hyper ram. */
+    status = mixspi_psram_reset(base);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    status = mixspi_psram_get_mcr(base, 0x0, mr0mr1);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    status = mixspi_psram_get_mcr(base, 0x4, mr4mr8);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    /* Enable RBX, burst length set to 1K. - MR8 */
+    mr8Val[0] = (mr4mr8[0] & 0xFF00U) >> 8U;
+    mr8Val[0] = mr8Val[0] | 0x0F;
+    status    = mixspi_psram_write_mcr(base, 0x8, mr8Val);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    /* Set LC code to 0x04(LC=7, maximum frequency 200M) - MR0. */
+    mr0Val[0] = mr0mr1[0] & 0x00FFU;
+    mr0Val[0] = (mr0Val[0] & ~0x3CU) | (4U << 2U);
+    status    = mixspi_psram_write_mcr(base, 0x0, mr0Val);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    /* Set WLC code to 0x01(WLC=7, maximum frequency 200M) - MR4. */
+    mr4Val[0] = mr4mr8[0] & 0x00FFU;
+    mr4Val[0] = (mr4Val[0] & ~0xE0U) | (1U << 5U);
+    status    = mixspi_psram_write_mcr(base, 0x4, mr4Val);
+    if (status != kStatus_Success)
+    {
+        return status;
+    }
+
+    return status;
+}
+
 #endif // APMEMORY_DEVICE_SERIES
 

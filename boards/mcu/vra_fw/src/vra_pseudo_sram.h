@@ -76,6 +76,7 @@ extern void mixspi_psram_ahbcommand_read_data(MIXSPI_Type *base, uint32_t addres
 
 #if APMEMORY_DEVICE_SERIES
 extern void vra_psram_set_param_for_apmemory(void);
+status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base);
 #endif
 
 #endif /* _VRA_PSEUDO_SRAM_H_ */
