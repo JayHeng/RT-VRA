@@ -63,6 +63,25 @@ status_t mixspi_psram_read_register(FLEXSPI_Type *base, psram_reg_access_t *regA
     return status;
 }
 
+status_t mixspi_psram_read_id(FLEXSPI_Type *base, uint16_t *buffer)
+{
+    flexspi_transfer_t flashXfer;
+    status_t status;
+
+    /* Write data */
+    flashXfer.deviceAddress = 0x00;
+    flashXfer.port          = EXAMPLE_MIXSPI_PORT;
+    flashXfer.cmdType       = kFLEXSPI_Read;
+    flashXfer.SeqNumber     = 1;
+    flashXfer.seqIndex      = PSRAM_CMD_LUT_SEQ_IDX_READID;
+    flashXfer.data          = (uint32_t *)(void *)buffer;
+    flashXfer.dataSize      = 2;
+
+    status = FLEXSPI_TransferBlocking(base, &flashXfer);
+
+    return status;
+}
+
 status_t mixspi_psram_reset(FLEXSPI_Type *base)
 {
     flexspi_transfer_t flashXfer;
@@ -92,6 +111,7 @@ status_t mixspi_psram_reset(FLEXSPI_Type *base)
 status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexspi_read_sample_clock_t rxSampleClock)
 {
     flexspi_device_config_t deviceconfig = {
+#if defined(CPU_MIMXRT685SFVKB_cm33) || defined(CPU_MIMXRT595SFFOC_cm33)
         .flexspiRootClk       = 396000000, /* 396MHZ SPI serial clock, DDR serial clock 198M */
         .isSck2Enabled        = false,
         .flashSize            = 0x2000, /* 64Mb/KByte */
@@ -101,6 +121,18 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
         .CSSetupTime          = 3,
         .dataValidTime        = 1,
         .columnspace          = 0,
+#elif defined(CPU_RW612ETA1I)
+        .flexspiRootClk       = 320000000, /* 320MHZ SPI serial clock, DDR serial clock 160M */
+        .isSck2Enabled        = false,
+        .flashSize            = 0x1000, /* 32Mb/KByte */
+        .addressShift         = true,
+        .CSIntervalUnit       = kFLEXSPI_CsIntervalUnit1SckCycle,
+        .CSInterval           = 5,
+        .CSHoldTime           = 2,
+        .CSSetupTime          = 3,
+        .dataValidTime        = 1,
+        .columnspace          = 9 + 5, /* CA:9 + CA_SHIFT:5 */
+#endif
         .enableWordAddress    = false,
         .AWRSeqIndex          = PSRAM_CMD_LUT_SEQ_IDX_WRITEDATA,
         .AWRSeqNumber         = 1,
@@ -116,16 +148,15 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
 
     bsp_mixspi_init();
 
-#if BOARD_ENABLE_PSRAM_CACHE
-    CACHE64_EnableWriteBuffer(EXAMPLE_CACHE, true);
-    CACHE64_EnableCache(EXAMPLE_CACHE);
-#endif
-
     /* Get FLEXSPI default settings and configure the flexspi. */
     FLEXSPI_GetDefaultConfig(&config);
 
     /* Init FLEXSPI. */
     config.rxSampleClock = rxSampleClock;
+#if defined(CPU_RW612ETA1I)
+    config.rxSampleClockPortB = rxSampleClock;
+    config.rxSampleClockDiff  = true;
+#endif
     /*Set AHB buffer size for reading data through AHB bus. */
     config.ahbConfig.enableAHBPrefetch    = true;
     config.ahbConfig.enableAHBBufferable  = true;
@@ -145,11 +176,15 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
     config.ahbConfig.buffer[0].priority       = 7; /* Set GPU/Display to highest priority. */
     /* All other masters use last buffer with 1KB bytes. */
     config.ahbConfig.buffer[FSL_FEATURE_FLEXSPI_AHB_BUFFER_COUNT - 1].bufferSize = 1024;
-#elif defined(CPU_MIMXRT685SFVKB_cm33)
+#elif defined(CPU_MIMXRT685SFVKB_cm33) || defined(CPU_RW612ETA1I)
     /* FlexSPI has total 1KB RX buffer.
      * Set DMA0 master to use AHB Rx Buffer0.
      */
+#if defined(CPU_RW612ETA1I)
+    config.ahbConfig.buffer[0].masterIndex    = 10;  /* GDMA */
+#elif defined(CPU_MIMXRT685SFVKB_cm33)
     config.ahbConfig.buffer[0].masterIndex    = 4;   /* DMA0 */
+#endif
     config.ahbConfig.buffer[0].bufferSize     = 512; /* Allocate 512B bytes for DMA0 */
     config.ahbConfig.buffer[0].enablePrefetch = true;
     config.ahbConfig.buffer[0].priority       = 0;
@@ -157,7 +192,11 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
     config.ahbConfig.buffer[FSL_FEATURE_FLEXSPI_AHB_BUFFER_COUNT - 1].bufferSize = 512;
 #endif
 #if !(defined(FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN) && FSL_FEATURE_FLEXSPI_HAS_NO_MCR0_COMBINATIONEN)
+#if defined(CPU_RW612ETA1I)
+    config.enableCombination = false;
+#else
     config.enableCombination = true;
+#endif
 #endif
     FLEXSPI_Init(base, &config);
 
@@ -169,6 +208,8 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
 
     /* Do software reset. */
     FLEXSPI_SoftwareReset(base);
+
+    bsp_mixspi_cleanup();
 
     return status;
 }

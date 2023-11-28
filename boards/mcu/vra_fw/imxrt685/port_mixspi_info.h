@@ -58,6 +58,15 @@ static void bsp_mixspi_init(void)
     /* As cache depends on FlexSPI power and clock, cache must be initialized after FlexSPI power/clock is set */
     CACHE64_GetDefaultConfig(&cacheCfg);
     CACHE64_Init(CACHE64_POLSEL, &cacheCfg);
+#if BOARD_ENABLE_PSRAM_CACHE
+    CACHE64_EnableWriteBuffer(EXAMPLE_CACHE, true);
+    CACHE64_EnableCache(EXAMPLE_CACHE);
+#endif
+}
+
+static void bsp_mixspi_cleanup(void)
+{
+
 }
 
 static void cpu_show_clock_source(void)

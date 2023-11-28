@@ -26,8 +26,8 @@
 #define VRA_MIXSPI_MODULE VRA_MIXSPI_MODULE_IS_FLEXSPI
 
 #define EXAMPLE_MIXSPI                  FLEXSPI
-#define EXAMPLE_CACHE                   CACHE64_CTRL0
-#define EXAMPLE_MIXSPI_AMBA_BASE        FlexSPI_AMBA_PC_CACHE_BASE
+#define EXAMPLE_CACHE                   CACHE64_CTRL1
+#define EXAMPLE_MIXSPI_AMBA_BASE        FlexSPI_AMBA_PS_CACHE_BASE
 #define EXAMPLE_MIXSPI_PORT             kFLEXSPI_PortB1
 #define DRAM_SIZE                       0x400000U
 
@@ -43,6 +43,21 @@
 static void bsp_mixspi_init(void)
 {
 
+}
+
+static void bsp_mixspi_cleanup(void)
+{
+#if BOARD_ENABLE_PSRAM_CACHE
+    cache64_config_t cacheCfg;
+    CACHE64_GetDefaultConfig(&cacheCfg);
+    /* Suppose:
+       Flash on PC bus starting from 0x08000000, controlled by cache 0.
+       PSRAM on PS bus starting from 0x28000000, controlled by cache 1.
+     */
+    CACHE64_Init(CACHE64_POLSEL1, &cacheCfg);
+    CACHE64_EnableWriteBuffer(CACHE64_CTRL1, true);
+    CACHE64_EnableCache(CACHE64_CTRL1);
+#endif
 }
 
 static void cpu_show_clock_source(void)
@@ -103,7 +118,10 @@ static void mixspi_pin_init(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad
 {
     if (base == FLEXSPI)
     {
-        IO_MUX_SetPinMux(IO_MUX_QUAD_SPI_FLASH);
+        /* FLEXSPI psram: GPIO35-41 */
+        IO_MUX_SetPinMux(IO_MUX_QUAD_SPI_PSRAM);
+        /* GPIO37 is for external DQS pin */
+        IO_MUX_SetPinConfig(37, IO_MUX_PinConfigPullDown);
     }
     else
     {

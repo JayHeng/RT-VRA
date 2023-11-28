@@ -4986,6 +4986,9 @@
             <name>$PROJ_DIR$\..\..\src\vra_flexspi_psram_ops.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram.h</name>
         </file>
         <file>
@@ -4993,6 +4996,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_apmemory.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_issi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_issi.h</name>
         </file>
     </group>
     <group>

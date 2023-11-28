@@ -46,23 +46,29 @@ void vra_main(void)
     /* Show CPU clock source */
     cpu_show_clock_source();
 
-    vra_psram_set_param_for_apmemory();
+    //vra_psram_set_param_for_apmemory();
+    vra_psram_set_param_for_issi();
 
     vra_printf("\r\nVRA: Set FlexSPI port to %d-bit pad.\r\n", 1u << (uint32_t)g_psramPropertyInfo.mixspiPad);
     /* Init FlexSPI pinmux */
     mixspi_pin_init(EXAMPLE_MIXSPI, EXAMPLE_MIXSPI_PORT, g_psramPropertyInfo.mixspiPad);
+    vra_printf("VRA: Set FlexSPI root clock to %dMHz.\r\n", decode_mixspi_root_clk_defn(g_psramPropertyInfo.mixspiRootClkFreq));
+    /* Set FlexSPI root clock */
+    mixspi_clock_init(EXAMPLE_MIXSPI, g_psramPropertyInfo.mixspiRootClkFreq);
+    /* Show FlexSPI clock source */
+    mixspi_show_clock_source(EXAMPLE_MIXSPI);
 
     uint32_t i  = 0;
-    status_t st = kStatus_Success;
 
     status_t status = mixspi_psram_init(EXAMPLE_MIXSPI, g_psramPropertyInfo.mixspiCustomLUTVendor, g_psramPropertyInfo.mixspiReadSampleClock);
     if (status != kStatus_Success)
     {
         assert(false);
     }
-    vra_printf("VRA: FLEXSPI module is initialized to xccela mode.\r\n");
+    vra_printf("VRA: FLEXSPI module is initialized to qpi mode.\r\n");
 
-    st = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
+    //status = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
+    status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
     if (status != kStatus_Success)
     {
         assert(false);
@@ -82,20 +88,20 @@ void vra_main(void)
      * should be 1024 aligned.*/
     for (i = 0; i < DRAM_SIZE; i += 1024)
     {
-        st = mixspi_psram_ipcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
+        status = mixspi_psram_ipcommand_write_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_write_buffer,
                                                     sizeof(s_psram_write_buffer));
 
-        if (st != kStatus_Success)
+        if (status != kStatus_Success)
         {
-            st = kStatus_Fail;
+            status = kStatus_Fail;
             vra_printf("IP Command Write data Failure at 0x%x!\r\n", i);
         }
 
-        st = mixspi_psram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
+        status = mixspi_psram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
                                                    sizeof(s_psram_read_buffer));
-        if (st != kStatus_Success)
+        if (status != kStatus_Success)
         {
-            st = kStatus_Fail;
+            status = kStatus_Fail;
             vra_printf("IP Command Read data Failure at 0x%x!\r\n", i);
         }
 
