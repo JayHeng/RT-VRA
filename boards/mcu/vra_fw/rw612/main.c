@@ -35,7 +35,7 @@ int main(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    vra_printf("\r\nVRA: Target RW612.\r\n");
+    vra_printf("\r\nVRA: Target RW610.\r\n");
     vra_printf("\r\n-------------------------------------\r\n");
     vra_main();
     vra_printf("-------------------------------------\r\n");
