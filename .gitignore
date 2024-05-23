@@ -9,6 +9,9 @@
 #
 # Normal rules
 #
+
+*.cmake
+
 *.o
 *.o.*
 *.a
