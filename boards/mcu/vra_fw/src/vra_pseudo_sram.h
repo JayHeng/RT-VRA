@@ -17,13 +17,13 @@
 // Supported PSRAM protocol type
 typedef enum _psram_protocol_type
 {
-    kPsamProtocolType_QSPI      = 0,
-    kPsamProtocolType_QPI       = 1,
-    kPsamProtocolType_XCCELA    = 2,
-    kPsamProtocolType_HYPERBUS  = 3,
-    kPsamProtocolType_xSPI      = 4,   // JESD251
+    kPsramProtocolType_QSPI     = 0,
+    kPsramProtocolType_QPI      = 1,
+    kPsramProtocolType_XCCELA   = 2,
+    kPsramProtocolType_HYPERBUS = 3,
+    kPsramProtocolType_OctaBus  = 4,   // JESD251
 
-    kPsamProtocolType_MAX       = 5,
+    kPsramProtocolType_MAX      = 5,
 } psram_protocol_type_t;
 
 // PSRAM property info for operation
