@@ -84,7 +84,7 @@ void vra_psram_set_param_for_issi(void)
 
 status_t vra_psram_set_registers_for_issi(MIXSPI_Type *base)
 {
-    uint16_t identification = 0x00U;
+    uint32_t identification = 0x00U;
     uint16_t registerVal    = 0x00U;
     psram_reg_access_t regAccess;
     status_t status = kStatus_Success;
@@ -92,7 +92,7 @@ status_t vra_psram_set_registers_for_issi(MIXSPI_Type *base)
     /* Read identification: the Manufacturer ID of ISSI's PSRAM(IS66/67WVQ8M4DALL) is 0x03U  */
     do
     {
-        status = mixspi_psram_read_id(base, &identification);
+        status = mixspi_psram_read_id(base, 0x0, &identification);
         if ((status != kStatus_Success) || (identification & 0x03U) != 0x03U)
         {
             status = kStatus_Fail;
@@ -118,7 +118,7 @@ status_t vra_psram_set_registers_for_issi(MIXSPI_Type *base)
         /* Write configuration register: */
         regAccess.regNum = 2;
         regAccess.regAddr = 0x04UL << 9;
-        regAccess.regValue.U = registerVal;
+        regAccess.regValue.U = registerVal & 0xFFFF;
         status = mixspi_psram_write_register(base, &regAccess);
         if ((status != kStatus_Success) || registerVal != 0xF05AU)
         {

@@ -63,21 +63,23 @@ status_t mixspi_psram_read_register(FLEXSPI_Type *base, psram_reg_access_t *regA
     return status;
 }
 
-status_t mixspi_psram_read_id(FLEXSPI_Type *base, uint16_t *buffer)
+status_t mixspi_psram_read_id(FLEXSPI_Type *base, uint32_t idAddress, uint32_t *buffer)
 {
     flexspi_transfer_t flashXfer;
     status_t status;
 
     /* Write data */
-    flashXfer.deviceAddress = 0x00;
+    flashXfer.deviceAddress = idAddress;
     flashXfer.port          = EXAMPLE_MIXSPI_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = PSRAM_CMD_LUT_SEQ_IDX_READID;
-    flashXfer.data          = (uint32_t *)(void *)buffer;
-    flashXfer.dataSize      = 2;
+    flashXfer.data          = buffer;
+    flashXfer.dataSize      = 4;
 
     status = FLEXSPI_TransferBlocking(base, &flashXfer);
+
+    *buffer &= 0xffffU;
 
     return status;
 }

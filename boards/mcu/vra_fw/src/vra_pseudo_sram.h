@@ -91,7 +91,7 @@ extern psram_property_info_t g_psramPropertyInfo;
 
 extern status_t mixspi_psram_write_register(MIXSPI_Type *base, psram_reg_access_t *regAccess);
 extern status_t mixspi_psram_read_register(MIXSPI_Type *base, psram_reg_access_t *regAccess);
-extern status_t mixspi_psram_read_id(MIXSPI_Type *base, uint16_t *buffer);
+extern status_t mixspi_psram_read_id(MIXSPI_Type *base, uint32_t idAddress, uint32_t *buffer);
 extern status_t mixspi_psram_reset(MIXSPI_Type *base);
 extern status_t mixspi_psram_init(MIXSPI_Type *base, const uint32_t *customLUT, flexspi_read_sample_clock_t rxSampleClock);
 
