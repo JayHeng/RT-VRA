@@ -47,7 +47,8 @@ void vra_main(void)
     cpu_show_clock_source();
 
     //vra_psram_set_param_for_apmemory();
-    vra_psram_set_param_for_issi();
+    //vra_psram_set_param_for_issi();
+    vra_psram_set_param_for_infineon();
 
     vra_printf("\r\nVRA: Set FlexSPI port to %d-bit pad.\r\n", 1u << (uint32_t)g_psramPropertyInfo.mixspiPad);
     /* Init FlexSPI pinmux */
@@ -68,7 +69,8 @@ void vra_main(void)
     vra_printf("VRA: FLEXSPI module is initialized to qpi mode.\r\n");
 
     //status = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
-    status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
+    //status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
+    status = vra_psram_set_registers_for_infineon(EXAMPLE_MIXSPI);
     if (status != kStatus_Success)
     {
         assert(false);

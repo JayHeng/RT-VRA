@@ -71,13 +71,21 @@ typedef struct _psram_reg_access
 #define APMEMORY_DEVICE_QSPI        (0)
 #define APMEMORY_DEVICE_APSxx04xSQ  (0)
 #define APMEMORY_DEVICE_APSxx04xDQ  (0)
-#define APMEMORY_DEVICE_XCCELA      (1)
-#define APMEMORY_DEVICE_APSxx08xOB  (1)  // MIMXRT595-EVK, MIMXRT685-EVK (APS6408L-OBM)
+#define APMEMORY_DEVICE_XCCELA      (0)
+#define APMEMORY_DEVICE_APSxx08xOB  (0)  // MIMXRT595-EVK, MIMXRT685-EVK (APS6408L-OBM)
 #define APMEMORY_DEVICE_APSxx16xOB  (0)
 ////////////////////////////////////////////////////////////////////////////////
 #define ISSI_DEVICE_SERIES          (1)
-#define ISSI_DEVICE_QPI             (1)
-#define ISSI_DEVICE_IS6xWVQ         (1)  // RD-RW612-BGA (IS66WVQ8M4DALL)
+#define ISSI_DEVICE_QPI             (0)
+#define ISSI_DEVICE_IS6xWVQ         (0)  // RD-RW612-BGA (IS66WVQ8M4DALL)
+////////////////////////////////////////////////////////////////////////////////
+#define INFINEON_DEVICE_SERIES      (1)
+#define INFINEON_DEVICE_HYPERBUS    (1)
+#define INFINEON_DEVICE_S27KSxxx2   (1)
+
+#define DEVICE_QPI                  (ISSI_DEVICE_QPI)
+#define DEVICE_XCCELA               (APMEMORY_DEVICE_XCCELA)
+#define DEVICE_HYPERBUS             (INFINEON_DEVICE_HYPERBUS)
 
 /*******************************************************************************
  * Variables
@@ -109,6 +117,10 @@ extern status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base);
 #if ISSI_DEVICE_SERIES
 extern void vra_psram_set_param_for_issi(void);
 extern status_t vra_psram_set_registers_for_issi(MIXSPI_Type *base);
+#endif
+#if INFINEON_DEVICE_SERIES
+extern void vra_psram_set_param_for_infineon(void);
+extern status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base);
 #endif
 
 #endif /* _VRA_PSEUDO_SRAM_H_ */

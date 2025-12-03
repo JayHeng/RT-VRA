@@ -113,8 +113,7 @@ status_t mixspi_psram_reset(FLEXSPI_Type *base)
 status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexspi_read_sample_clock_t rxSampleClock)
 {
     flexspi_device_config_t deviceconfig = {
-#if defined(CPU_MIMXRT685SFVKB_cm33) || defined(CPU_MIMXRT595SFFOC_cm33)
-        .flexspiRootClk       = 396000000, /* 396MHZ SPI serial clock, DDR serial clock 198M */
+        .flexspiRootClk       = 200000000, /* 200MHZ SPI serial clock, DDR serial clock 100M */
         .isSck2Enabled        = false,
         .flashSize            = 0x2000, /* 64Mb/KByte */
         .CSIntervalUnit       = kFLEXSPI_CsIntervalUnit1SckCycle,
@@ -122,20 +121,17 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
         .CSHoldTime           = 3,
         .CSSetupTime          = 3,
         .dataValidTime        = 1,
-        .columnspace          = 0,
-#elif defined(CPU_RW612ETA1I)
-        .flexspiRootClk       = 320000000, /* 320MHZ SPI serial clock, DDR serial clock 160M */
-        .isSck2Enabled        = false,
-        .flashSize            = 0x1000, /* 32Mb/KByte */
+#if DEVICE_QPI
         .addressShift         = true,
-        .CSIntervalUnit       = kFLEXSPI_CsIntervalUnit1SckCycle,
-        .CSInterval           = 5,
-        .CSHoldTime           = 2,
-        .CSSetupTime          = 3,
-        .dataValidTime        = 1,
         .columnspace          = 9 + 5, /* CA:9 + CA_SHIFT:5 */
-#endif
         .enableWordAddress    = false,
+#elif DEVICE_HYPERBUS
+        .columnspace          = 3,
+        .enableWordAddress    = true,
+#elif DEVICE_XCCELA
+        .columnspace          = 0,
+        .enableWordAddress    = false,
+#endif
         .AWRSeqIndex          = PSRAM_CMD_LUT_SEQ_IDX_WRITEDATA,
         .AWRSeqNumber         = 1,
         .ARDSeqIndex          = PSRAM_CMD_LUT_SEQ_IDX_READDATA,
@@ -201,6 +197,12 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
 #endif
 #endif
     FLEXSPI_Init(base, &config);
+
+#if defined(FLEXSPI_AHBCR_ALIGNMENT_MASK)
+    /* Set alignment, otherwise the prefetch burst may cross die boundary. */
+    base->AHBCR &= ~FLEXSPI_AHBCR_ALIGNMENT_MASK;
+    base->AHBCR |= FLEXSPI_AHBCR_ALIGNMENT(1);/* 1KB */
+#endif
 
     /* Configure flash settings according to serial flash feature. */
     FLEXSPI_SetFlashConfig(base, &deviceconfig, EXAMPLE_MIXSPI_PORT);
