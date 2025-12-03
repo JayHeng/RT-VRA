@@ -77,75 +77,83 @@ void vra_psram_set_param_for_infineon(void)
 status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
 {
     status_t status = kStatus_Success;
+    psram_reg_access_t regAccess;
     uint32_t IR0 = 0;
 
-    status = mixspi_psram_read_id(base, 0x0, &IR0);
+    regAccess.regNum = 2;
+    regAccess.regAddr = 0x0 << 1;
+    regAccess.regValue.U = 0;
+    status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die0 ID Register 0:\r\n", IR0);
+    vra_printf(" Read Die0 ID0: 0x%x\r\n", regAccess.regValue.U);
 
-    status = mixspi_psram_read_id(base, (0x400000 << 1), &IR0);
+    regAccess.regAddr = 0x400000 << 1;
+    regAccess.regValue.U = 0;
+    status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die1 ID Register 0:\r\n", IR0);
+    vra_printf(" Read Die1 ID0: 0x%x\r\n", regAccess.regValue.U);
+    IR0 = regAccess.regValue.U;
     
     ////////////////////////////////////////////////////////////////////////////
     uint32_t CR0 = 0;
-    psram_reg_access_t regAccess;
-    
-    regAccess.regNum = 2;
-    regAccess.regAddr = (0x800 << 1);
+
+    regAccess.regAddr = 0x800 << 1;
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die0 Configuration Register 0 default value: 0x%x\r\n", regAccess.regValue.U);
-    regAccess.regAddr = (0x400800 << 1);
+    vra_printf(" Read Die0 CR0: 0x%x\r\n", regAccess.regValue.U);
+
+    regAccess.regAddr = 0x400800 << 1;
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die1 Configuration Register 0 default value: 0x%x\r\n", regAccess.regValue.U);
+    vra_printf(" Read Die1 CR0: 0x%x\r\n", regAccess.regValue.U);
+
     CR0 = regAccess.regValue.U;
     
-    regAccess.regAddr = (0x800 << 1);
+    regAccess.regAddr = 0x800 << 1;
     regAccess.regValue.U = (CR0 & ~0x70) | (7 << 4U);//19 ohms
     status = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    regAccess.regAddr = (0x400800 << 1);
+
+    regAccess.regAddr = 0x400800 << 1;
     status = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
 
-    regAccess.regAddr = (0x800 << 1);
+    regAccess.regAddr = 0x800 << 1;
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die0 Configuration Register 0 default value: 0x%x\r\n", regAccess.regValue.U);
-    regAccess.regAddr = (0x400800 << 1);
+    vra_printf(" Read Die0 CR0: 0x%x\r\n", regAccess.regValue.U);
+    regAccess.regAddr = 0x400800 << 1;
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
-    vra_printf(" Read Die1 Configuration Register 0 default value: 0x%x\r\n", regAccess.regValue.U);
+    vra_printf(" Read Die1 CR0: 0x%x\r\n", regAccess.regValue.U);
 
     return status;
 }

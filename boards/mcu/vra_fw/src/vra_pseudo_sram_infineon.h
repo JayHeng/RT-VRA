@@ -14,7 +14,7 @@
  * Definitions
  ******************************************************************************/
 
-#if INFINEON_DEVICE_S27KSxxx2
+#if INFINEON_DEVICE_S70KSxxx2
 
 
 #endif

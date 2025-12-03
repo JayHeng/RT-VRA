@@ -81,7 +81,7 @@ typedef struct _psram_reg_access
 ////////////////////////////////////////////////////////////////////////////////
 #define INFINEON_DEVICE_SERIES      (1)
 #define INFINEON_DEVICE_HYPERBUS    (1)
-#define INFINEON_DEVICE_S27KSxxx2   (1)
+#define INFINEON_DEVICE_S70KSxxx2   (1)
 
 #define DEVICE_QPI                  (ISSI_DEVICE_QPI)
 #define DEVICE_XCCELA               (APMEMORY_DEVICE_XCCELA)
