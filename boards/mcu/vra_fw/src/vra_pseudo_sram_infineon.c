@@ -67,7 +67,7 @@ void vra_psram_set_param_for_infineon(void)
 #if INFINEON_DEVICE_HYPERBUS
     {
         g_psramPropertyInfo.mixspiPad                 = kFLEXSPI_8PAD;
-        g_psramPropertyInfo.mixspiRootClkFreq         = kMixspiRootClkFreq_200MHz;
+        g_psramPropertyInfo.mixspiRootClkFreq         = kMixspiRootClkFreq_332MHz;
         g_psramPropertyInfo.mixspiCustomLUTVendor     = s_customLUT_INFINEON_Hyperbus;
         g_psramPropertyInfo.mixspiReadSampleClock     = kFLEXSPI_ReadSampleClkExternalInputFromDqsPad;
     }
@@ -147,7 +147,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
     vra_printf(" Read Die1 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
 
     CR0 = infineon_convert_reg_value(regAccess.regValue.U);
-    
+#if 0
     regAccess.regAddr = infineon_convert_reg_address(0x800);
     regAccess.regValue.U = infineon_convert_reg_value((CR0 & 0x8FFF) | (7 << 12U)); //19 ohms
     status = mixspi_psram_write_register(base, &regAccess);
@@ -180,7 +180,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die1 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
-
+#endif
     return status;
 }
 

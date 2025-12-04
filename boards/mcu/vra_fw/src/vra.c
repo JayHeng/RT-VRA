@@ -66,7 +66,7 @@ void vra_main(void)
     {
         assert(false);
     }
-    vra_printf("VRA: FLEXSPI module is initialized to qpi mode.\r\n");
+    vra_printf("VRA: FLEXSPI module is initialized.\r\n");
 
     //status = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
     //status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
@@ -75,9 +75,6 @@ void vra_main(void)
     {
         assert(false);
     }
-
-    /* Show FlexSPI clock source */
-    mixspi_show_clock_source(EXAMPLE_MIXSPI);
 
     vra_printf("FLEXSPI example started!\r\n");
 
