@@ -16,6 +16,7 @@
 
 #if INFINEON_DEVICE_S70KSxxx2
 
+#define INFINEON_PSRAM_DUMMY_CYCLES (7)
 
 #endif
 

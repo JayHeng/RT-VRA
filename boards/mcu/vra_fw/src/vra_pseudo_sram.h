@@ -17,8 +17,8 @@
 // Supported PSRAM protocol type
 typedef enum _psram_protocol_type
 {
-    kPsramProtocolType_QSPI     = 0,
-    kPsramProtocolType_QPI      = 1,
+    kPsramProtocolType_QSPI_SDR = 0,
+    kPsramProtocolType_QPI_DDR  = 1,
     kPsramProtocolType_XCCELA   = 2,
     kPsramProtocolType_HYPERBUS = 3,
     kPsramProtocolType_OctaBus  = 4,   // JESD251
@@ -69,23 +69,39 @@ typedef struct _psram_reg_access
 ////////////////////////////////////////////////////////////////////////////////
 #define APMEMORY_DEVICE_SERIES      (1)
 #define APMEMORY_DEVICE_QSPI        (0)
-#define APMEMORY_DEVICE_APSxx04xSQ  (0)
-#define APMEMORY_DEVICE_APSxx04xDQ  (0)
+#define APMEMORY_DEVICE_APSxx04xSQ  (0)  // 4bit
+#define APMEMORY_DEVICE_QPI         (0)
+#define APMEMORY_DEVICE_APSxx04xDQ  (0)  // 4bit
 #define APMEMORY_DEVICE_XCCELA      (0)
-#define APMEMORY_DEVICE_APSxx08xOB  (0)  // MIMXRT595-EVK, MIMXRT685-EVK (APS6408L-OBM)
-#define APMEMORY_DEVICE_APSxx16xOB  (0)
+#define APMEMORY_DEVICE_APSxx08xOB  (0)  // 8bit MIMXRT595-EVK, MIMXRT685-EVK (APS6408L-OBM)
+#define APMEMORY_DEVICE_APSxx16xOB  (0)  // 16bit
 ////////////////////////////////////////////////////////////////////////////////
 #define ISSI_DEVICE_SERIES          (1)
+#define ISSI_DEVICE_QSPI            (0)
+#define ISSI_DEVICE_IS6xWVS         (0)  // 4bit
 #define ISSI_DEVICE_QPI             (0)
-#define ISSI_DEVICE_IS6xWVQ         (0)  // RD-RW612-BGA (IS66WVQ8M4DALL)
+#define ISSI_DEVICE_IS6xWVQ         (0)  // 4bit RD-RW612-BGA (IS66WVQ8M4DALL)
+#define ISSI_DEVICE_XCCELA          (0)
+#define ISSI_DEVICE_IS6xWVO         (0)  // 8bit
+#define ISSI_DEVICE_HYPERBUS        (0)
+#define ISSI_DEVICE_IS6xWVH         (0)  // 8bit
+////////////////////////////////////////////////////////////////////////////////
+#define WINBOND_DEVICE_SERIES       (1)
+#define WINBOND_DEVICE_HYPERBUS     (0)
+#define WINBOND_DEVICE_W95xD8       (0)  // 8bit MIMXRT1189-EVK
+#define WINBOND_DEVICE_W95xD6       (0)  // 16bit MIMXRT798-EVK
 ////////////////////////////////////////////////////////////////////////////////
 #define INFINEON_DEVICE_SERIES      (1)
 #define INFINEON_DEVICE_HYPERBUS    (1)
-#define INFINEON_DEVICE_S70KSxxx2   (1)
-
-#define DEVICE_QPI                  (ISSI_DEVICE_QPI)
-#define DEVICE_XCCELA               (APMEMORY_DEVICE_XCCELA)
-#define DEVICE_HYPERBUS             (INFINEON_DEVICE_HYPERBUS)
+#define INFINEON_DEVICE_S70KSxxx2   (1)  // 8bit
+#define INFINEON_DEVICE_S70KSxxx4   (0)  // 16bit
+#define INFINEON_DEVICE_OCTABUS     (0)
+#define INFINEON_DEVICE_S70KSxxx3   (0)  // 8bit
+////////////////////////////////////////////////////////////////////////////////
+#define DEVICE_QPI                  (APMEMORY_DEVICE_QPI | ISSI_DEVICE_QPI)
+#define DEVICE_XCCELA               (APMEMORY_DEVICE_XCCELA | ISSI_DEVICE_XCCELA)
+#define DEVICE_HYPERBUS             (ISSI_DEVICE_HYPERBUS | WINBOND_DEVICE_HYPERBUS | INFINEON_DEVICE_HYPERBUS)
+#define DEVICE_OCTABUS              (INFINEON_DEVICE_OCTABUS)
 
 /*******************************************************************************
  * Variables
