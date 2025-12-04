@@ -14,9 +14,15 @@
  * Definitions
  ******************************************************************************/
 
-#if WINBOND_DEVICE_W95xD8
+#if WINBOND_DEVICE_W956_958A8
 
 #define WINBOND_PSRAM_DUMMY_CYCLES (7)
+#define WINBOND_PSRAM_DIE_NUMBER   (1)
+
+#elif WINBOND_DEVICE_W957_959D8
+
+#define WINBOND_PSRAM_DUMMY_CYCLES (7)
+#define WINBOND_PSRAM_DIE_NUMBER   (2)
 
 #endif
 

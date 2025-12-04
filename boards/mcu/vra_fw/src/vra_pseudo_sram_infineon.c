@@ -113,6 +113,8 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die0 ID0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
+
+#if (INFINEON_PSRAM_DIE_NUMBER == 2)
 /*
     regAccess.regAddr = infineon_convert_reg_address(0x400000);
     regAccess.regValue.U = 0;
@@ -123,6 +125,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
     }
     vra_printf(" Read Die1 ID0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
 */
+#endif
     IR0 = infineon_convert_reg_value(regAccess.regValue.U);
     
     ////////////////////////////////////////////////////////////////////////////
@@ -137,6 +140,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
     }
     vra_printf(" Read Die0 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
 
+#if (INFINEON_PSRAM_DIE_NUMBER == 2)
     regAccess.regAddr = infineon_convert_reg_address(0x400800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
@@ -145,6 +149,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die1 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
+#endif
 
     CR0 = infineon_convert_reg_value(regAccess.regValue.U);
 #if 0
@@ -156,12 +161,14 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
 
+#if (INFINEON_PSRAM_DIE_NUMBER == 2)
     regAccess.regAddr = infineon_convert_reg_address(0x400800);
     status = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
+#endif
 
     regAccess.regAddr = infineon_convert_reg_address(0x800);
     regAccess.regValue.U = 0;
@@ -172,6 +179,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
     }
     vra_printf(" Read Die0 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
 
+#if (INFINEON_PSRAM_DIE_NUMBER == 2)
     regAccess.regAddr = infineon_convert_reg_address(0x400800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
@@ -180,6 +188,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die1 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
+#endif
 #endif
     return status;
 }

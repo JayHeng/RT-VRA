@@ -14,9 +14,15 @@
  * Definitions
  ******************************************************************************/
 
-#if INFINEON_DEVICE_S70KSxxx2
+#if INFINEON_DEVICE_S70KS0642
 
 #define INFINEON_PSRAM_DUMMY_CYCLES (7)
+#define INFINEON_PSRAM_DIE_NUMBER   (1)
+
+#elif INFINEON_DEVICE_S70KS1282
+
+#define INFINEON_PSRAM_DUMMY_CYCLES (7)
+#define INFINEON_PSRAM_DIE_NUMBER   (2)
 
 #endif
 

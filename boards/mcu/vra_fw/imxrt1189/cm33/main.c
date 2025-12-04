@@ -11,6 +11,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
+#include "vra.h"
 
 #include "fsl_ele_base_api.h"
 /*******************************************************************************
@@ -59,8 +60,6 @@ void SysTick_Handler(void)
  */
 int main(void)
 {
-    char ch;
-
     /* Init board hardware. */
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
@@ -76,11 +75,12 @@ int main(void)
         }
     }
 
-    PRINTF("hello world.\r\n");
+    vra_printf("\r\nVRA: Target i.MXRT1180.\r\n");
+    vra_printf("\r\n-------------------------------------\r\n");
+    vra_main();
+    vra_printf("-------------------------------------\r\n");
 
     while (1)
     {
-        ch = GETCHAR();
-        PUTCHAR(ch);
     }
 }

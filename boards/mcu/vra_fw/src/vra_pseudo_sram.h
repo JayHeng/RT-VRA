@@ -88,12 +88,14 @@ typedef struct _psram_reg_access
 ////////////////////////////////////////////////////////////////////////////////
 #define WINBOND_DEVICE_SERIES       (1)
 #define WINBOND_DEVICE_HYPERBUS     (1)
-#define WINBOND_DEVICE_W95xD8       (1)  // 8bit MIMXRT1189-EVK
-#define WINBOND_DEVICE_W95xD6       (0)  // 16bit MIMXRT798-EVK
+#define WINBOND_DEVICE_W956_958A8   (1)  // 8bit MIMXRT1189-EVK
+#define WINBOND_DEVICE_W957_959D8   (0)  // 8bit
+#define WINBOND_DEVICE_W958D6       (0)  // 16bit MIMXRT798-EVK
 ////////////////////////////////////////////////////////////////////////////////
 #define INFINEON_DEVICE_SERIES      (0)
 #define INFINEON_DEVICE_HYPERBUS    (0)
-#define INFINEON_DEVICE_S70KSxxx2   (0)  // 8bit
+#define INFINEON_DEVICE_S70KS0642   (0)  // 8bit
+#define INFINEON_DEVICE_S70KS1282   (0)  // 8bit
 #define INFINEON_DEVICE_S70KSxxx4   (0)  // 16bit
 #define INFINEON_DEVICE_OCTABUS     (0)
 #define INFINEON_DEVICE_S70KSxxx3   (0)  // 8bit
