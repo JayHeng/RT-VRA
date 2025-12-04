@@ -46,9 +46,15 @@ void vra_main(void)
     /* Show CPU clock source */
     cpu_show_clock_source();
 
-    //vra_psram_set_param_for_apmemory();
-    //vra_psram_set_param_for_issi();
+#if APMEMORY_DEVICE_SERIES
+    vra_psram_set_param_for_apmemory();
+#elif ISSI_DEVICE_SERIES
+    vra_psram_set_param_for_issi();
+#elif WINBOND_DEVICE_SERIES
+    vra_psram_set_param_for_winbond();
+#elif INFINEON_DEVICE_SERIES
     vra_psram_set_param_for_infineon();
+#endif
 
     vra_printf("\r\nVRA: Set FlexSPI port to %d-bit pad.\r\n", 1u << (uint32_t)g_psramPropertyInfo.mixspiPad);
     /* Init FlexSPI pinmux */
@@ -59,8 +65,6 @@ void vra_main(void)
     /* Show FlexSPI clock source */
     mixspi_show_clock_source(EXAMPLE_MIXSPI);
 
-    uint32_t i  = 0;
-
     status_t status = mixspi_psram_init(EXAMPLE_MIXSPI, g_psramPropertyInfo.mixspiCustomLUTVendor, g_psramPropertyInfo.mixspiReadSampleClock);
     if (status != kStatus_Success)
     {
@@ -68,9 +72,15 @@ void vra_main(void)
     }
     vra_printf("VRA: FLEXSPI module is initialized.\r\n");
 
-    //status = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
-    //status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
+#if APMEMORY_DEVICE_SERIES
+    status = vra_psram_set_registers_for_apmemory(EXAMPLE_MIXSPI);
+#elif ISSI_DEVICE_SERIES
+    status = vra_psram_set_registers_for_issi(EXAMPLE_MIXSPI);
+#elif WINBOND_DEVICE_SERIES
+    status = vra_psram_set_registers_for_winbond(EXAMPLE_MIXSPI);
+#elif INFINEON_DEVICE_SERIES
     status = vra_psram_set_registers_for_infineon(EXAMPLE_MIXSPI);
+#endif
     if (status != kStatus_Success)
     {
         assert(false);
@@ -78,6 +88,7 @@ void vra_main(void)
 
     vra_printf("FLEXSPI example started!\r\n");
 
+    uint32_t i  = 0;
     for (i = 0; i < sizeof(s_psram_write_buffer); i++)
     {
         s_psram_write_buffer[i] = i;

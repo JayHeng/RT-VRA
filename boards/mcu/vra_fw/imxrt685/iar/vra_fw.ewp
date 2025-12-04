@@ -4717,6 +4717,12 @@
         <file>
             <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_issi.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_winbond.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\src\vra_pseudo_sram_winbond.h</name>
+        </file>
     </group>
     <group>
         <name>startup</name>

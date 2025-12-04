@@ -67,7 +67,7 @@ typedef struct _psram_reg_access
 #define CUSTOM_LUT_LENGTH                64
 
 ////////////////////////////////////////////////////////////////////////////////
-#define APMEMORY_DEVICE_SERIES      (1)
+#define APMEMORY_DEVICE_SERIES      (0)
 #define APMEMORY_DEVICE_QSPI        (0)
 #define APMEMORY_DEVICE_APSxx04xSQ  (0)  // 4bit
 #define APMEMORY_DEVICE_QPI         (0)
@@ -76,7 +76,7 @@ typedef struct _psram_reg_access
 #define APMEMORY_DEVICE_APSxx08xOB  (0)  // 8bit MIMXRT595-EVK, MIMXRT685-EVK (APS6408L-OBM)
 #define APMEMORY_DEVICE_APSxx16xOB  (0)  // 16bit
 ////////////////////////////////////////////////////////////////////////////////
-#define ISSI_DEVICE_SERIES          (1)
+#define ISSI_DEVICE_SERIES          (0)
 #define ISSI_DEVICE_QSPI            (0)
 #define ISSI_DEVICE_IS6xWVS         (0)  // 4bit
 #define ISSI_DEVICE_QPI             (0)
@@ -87,13 +87,13 @@ typedef struct _psram_reg_access
 #define ISSI_DEVICE_IS6xWVH         (0)  // 8bit
 ////////////////////////////////////////////////////////////////////////////////
 #define WINBOND_DEVICE_SERIES       (1)
-#define WINBOND_DEVICE_HYPERBUS     (0)
-#define WINBOND_DEVICE_W95xD8       (0)  // 8bit MIMXRT1189-EVK
+#define WINBOND_DEVICE_HYPERBUS     (1)
+#define WINBOND_DEVICE_W95xD8       (1)  // 8bit MIMXRT1189-EVK
 #define WINBOND_DEVICE_W95xD6       (0)  // 16bit MIMXRT798-EVK
 ////////////////////////////////////////////////////////////////////////////////
-#define INFINEON_DEVICE_SERIES      (1)
-#define INFINEON_DEVICE_HYPERBUS    (1)
-#define INFINEON_DEVICE_S70KSxxx2   (1)  // 8bit
+#define INFINEON_DEVICE_SERIES      (0)
+#define INFINEON_DEVICE_HYPERBUS    (0)
+#define INFINEON_DEVICE_S70KSxxx2   (0)  // 8bit
 #define INFINEON_DEVICE_S70KSxxx4   (0)  // 16bit
 #define INFINEON_DEVICE_OCTABUS     (0)
 #define INFINEON_DEVICE_S70KSxxx3   (0)  // 8bit
@@ -133,6 +133,10 @@ extern status_t vra_psram_set_registers_for_apmemory(MIXSPI_Type *base);
 #if ISSI_DEVICE_SERIES
 extern void vra_psram_set_param_for_issi(void);
 extern status_t vra_psram_set_registers_for_issi(MIXSPI_Type *base);
+#endif
+#if WINBOND_DEVICE_SERIES
+extern void vra_psram_set_param_for_winbond(void);
+extern status_t vra_psram_set_registers_for_winbond(MIXSPI_Type *base);
 #endif
 #if INFINEON_DEVICE_SERIES
 extern void vra_psram_set_param_for_infineon(void);
