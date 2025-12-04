@@ -96,7 +96,7 @@ void vra_main(void)
         if (status != kStatus_Success)
         {
             status = kStatus_Fail;
-            vra_printf("IP Command Write data Failure at 0x%x!\r\n", i);
+            vra_printf("IPG Command Write data Failure at 0x%x!\r\n", i);
         }
 
         status = mixspi_psram_ipcommand_read_data(EXAMPLE_MIXSPI, i, (uint32_t *)s_psram_read_buffer,
@@ -104,17 +104,17 @@ void vra_main(void)
         if (status != kStatus_Success)
         {
             status = kStatus_Fail;
-            vra_printf("IP Command Read data Failure at 0x%x!\r\n", i);
+            vra_printf("IPG Command Read data Failure at 0x%x!\r\n", i);
         }
 
         if (memcmp(s_psram_read_buffer, s_psram_write_buffer, sizeof(s_psram_write_buffer)) != 0)
         {
-            vra_printf("IP Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
+            vra_printf("IPG Command Read/Write data Failure at 0x%x - 0x%x!\r\n", i, i + 1023);
             return;
         }
     }
 
-    vra_printf("IP Command Read/Write data succeed at all address range !\r\n");
+    vra_printf("IPG Command Read/Write data succeed at all address range !\r\n");
 
     /* Need to reset FlexSPI controller between IP/AHB access. */
     FLEXSPI_SoftwareReset(EXAMPLE_MIXSPI);

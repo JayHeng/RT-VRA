@@ -48,9 +48,6 @@ static void bsp_mixspi_init(void)
     POWER_DisablePD(kPDRUNCFG_PPD_FLEXSPI_SRAM);
     POWER_ApplyPD();
 
-    CLOCK_AttachClk(kAUX0_PLL_to_FLEXSPI_CLK);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexspiClk, 1);
-
     RESET_PeripheralReset(kFLEXSPI_RST_SHIFT_RSTn);
     /* Explicitly enable FlexSPI clock for PSRAM loader case which need to set FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL. */
     CLOCK_EnableClock(kCLOCK_Flexspi);
@@ -121,10 +118,42 @@ static void cpu_show_clock_source(void)
 
 static void mixspi_port_switch(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
 {
+    const uint32_t port2_pin28_config = (/* Pin is configured as PIO0_10 */
+                                         IOPCTL_PIO_FUNC0 |
+                                         /* Disable pull-up / pull-down function */
+                                         IOPCTL_PIO_PUPD_DI |
+                                         /* Enable pull-down function */
+                                         IOPCTL_PIO_PULLDOWN_EN |
+                                         /* Enables input buffer function */
+                                         IOPCTL_PIO_INBUF_EN |
+                                         /* Normal mode */
+                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                         /* Normal drive */
+                                         IOPCTL_PIO_FULLDRIVE_DI |
+                                         /* Analog mux is disabled */
+                                         IOPCTL_PIO_ANAMUX_DI |
+                                         /* Pseudo Output Drain is disabled */
+                                         IOPCTL_PIO_PSEDRAIN_DI |
+                                         /* Input function is not inverted */
+                                         IOPCTL_PIO_INV_DI);
+    /* PORT2 PIN28 is configured as GPIO */
+    IOPCTL_PinMuxSet(IOPCTL, 2U, 28U, port2_pin28_config);
+
+    /* Define the init structure for the output GPIO pin*/
+    gpio_pin_config_t pin_config = {
+        kGPIO_DigitalOutput,
+        0,
+    };
+
+    /* Init output LED GPIO. */
+    GPIO_PortInit(GPIO, 2);
+    GPIO_PinInit(GPIO, 2, 28, &pin_config);
+    GPIO_PinWrite(GPIO, 2, 28, 1);
 }
 
 static void mixspi_pin_init(FLEXSPI_Type *base, flexspi_port_t port, flexspi_pad_t pads)
 {
+    mixspi_port_switch(base, port, pads);
     if (base == FLEXSPI)
     {
         const uint32_t port1_pin18_config = (/* Pin is configured as FLEXSPI0A_SCLK */

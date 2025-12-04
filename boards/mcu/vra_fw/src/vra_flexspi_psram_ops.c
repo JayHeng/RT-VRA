@@ -115,7 +115,7 @@ status_t mixspi_psram_init(FLEXSPI_Type *base, const uint32_t *customLUT, flexsp
     flexspi_device_config_t deviceconfig = {
         .flexspiRootClk       = 200000000, /* 200MHZ SPI serial clock, DDR serial clock 100M */
         .isSck2Enabled        = false,
-        .flashSize            = 0x2000, /* 64Mb/KByte */
+        .flashSize            = 0x4000, /* 128Mb/KByte */
         .CSIntervalUnit       = kFLEXSPI_CsIntervalUnit1SckCycle,
         .CSInterval           = 5,
         .CSHoldTime           = 3,
