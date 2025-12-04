@@ -91,6 +91,12 @@ static uint32_t infineon_convert_reg_value(uint32_t reg)
     return ((reg & 0xFF) << 8) + ((reg >> 8) & 0xFF);
 }
 
+static uint32_t infineon_convert_reg_address(uint32_t addr)
+{
+    // If it is word-addressable, FlexSPI will ingore the last bit
+    return (addr << 1);
+}
+
 status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
 {
     status_t status = kStatus_Success;
@@ -99,7 +105,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
 
     // ID0 value for HYPERRAM™ is 0x0C81 if read from Die 0 or 0x4C81 if read from Die 1.
     regAccess.regNum = 2;
-    regAccess.regAddr = 0x0 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x0);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -107,8 +113,8 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die0 ID0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
-
-    regAccess.regAddr = 0x400000 << 1;
+/*
+    regAccess.regAddr = infineon_convert_reg_address(0x400000);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -116,12 +122,13 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die1 ID0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
+*/
     IR0 = infineon_convert_reg_value(regAccess.regValue.U);
     
     ////////////////////////////////////////////////////////////////////////////
     uint32_t CR0 = 0;
 
-    regAccess.regAddr = 0x800 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -130,7 +137,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
     }
     vra_printf(" Read Die0 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
 
-    regAccess.regAddr = 0x400800 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x400800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -141,7 +148,7 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
 
     CR0 = infineon_convert_reg_value(regAccess.regValue.U);
     
-    regAccess.regAddr = 0x800 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x800);
     regAccess.regValue.U = infineon_convert_reg_value((CR0 & 0x8FFF) | (7 << 12U)); //19 ohms
     status = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -149,14 +156,14 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
 
-    regAccess.regAddr = 0x400800 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x400800);
     status = mixspi_psram_write_register(base, &regAccess);
     if (status != kStatus_Success)
     {
         return status;
     }
 
-    regAccess.regAddr = 0x800 << 1;
+    regAccess.regAddr = infineon_convert_reg_address(0x800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
@@ -164,7 +171,8 @@ status_t vra_psram_set_registers_for_infineon(MIXSPI_Type *base)
         return status;
     }
     vra_printf(" Read Die0 CR0: 0x%x\r\n", infineon_convert_reg_value(regAccess.regValue.U));
-    regAccess.regAddr = 0x400800 << 1;
+
+    regAccess.regAddr = infineon_convert_reg_address(0x400800);
     regAccess.regValue.U = 0;
     status = mixspi_psram_read_register(base, &regAccess);
     if (status != kStatus_Success)
